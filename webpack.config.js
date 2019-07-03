@@ -20,9 +20,20 @@ module.exports = {
                 exclude: /node_modules/
             },
             {
-                test: /\.css$/,
-                use: ["style-loader", "css-loader"]
-            }
+                test: /\.(s)?css$/,
+                loader: "style-loader"
+            },
+            {
+                test: /\.(s)?css$/,
+                loader: 'css-loader',
+                options: {
+                    modules: true,
+                },
+            },
+            {
+                test: /\.(s)?css$/,
+                loader: 'sass-loader'
+            },
         ]
     },
     plugins: [htmlWebpackPlugin],

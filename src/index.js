@@ -1,7 +1,5 @@
-import React from 'react';
-import './styles.css';
+import Scheduler from './lib/Scheduler'
 
-const MyComponent = () => (
-    <h1>Hello from My Component2</h1>
-);
-export default MyComponent;
+export {
+    Scheduler
+}

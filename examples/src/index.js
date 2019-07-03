@@ -1,7 +1,9 @@
 import React from 'react';
-import { render} from 'react-dom';
-import MyComponent from '../../src';
+import { render } from 'react-dom';
+import { Scheduler } from '../../src';
+
 const App = () => (
-    <MyComponent />
+    <Scheduler />
 );
+
 render(<App />, document.getElementById("root"));
