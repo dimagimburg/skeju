@@ -1,5 +1,5 @@
-import Scheduler from './lib/Scheduler'
+import Scheduler from './lib/Scheduler';
 
 export {
-    Scheduler
-}
+    Scheduler,
+};
