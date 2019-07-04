@@ -1,8 +1,21 @@
-.scheduler{
-  border-collapse:collapse;
-  border: 1px solid black;
+.wrapper{
+    width: 100%;
+    background: beige;
+}
 
-  td{
+.scheduler {
+    height: 80px;
+    margin-bottom: 20px;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+}
+
+.dayColumn {
     padding: 0;
-  }
+    height: 75px;
+    background: burlywood;
+    flex: 0 0 auto;
 }
