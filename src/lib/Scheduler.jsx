@@ -2,6 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import {diff} from './utils/timeUtils';
+import {isEmptyObject} from './utils/generalUtils';
 import styles from './Scheduler.scss';
 
 class Scheduler extends React.Component {
@@ -9,6 +10,30 @@ class Scheduler extends React.Component {
         visibleStartDate: PropTypes.instanceOf(moment).isRequired,
         visibleEndDate: PropTypes.instanceOf(moment).isRequired
     };
+
+    items = [
+        {
+            row: 'shmulik',
+            startTime: moment(),
+            endTime: moment().add(2, 'days')
+        },
+        {
+            row: 'eliko',
+            startTime: moment().subtract(1, 'days'),
+            endTime: moment().add(1, 'days')
+        }
+    ];
+
+    rows = [
+        {
+            id: 'shmulik'
+        },
+        {
+            id: 'eliko'
+        }
+    ];
+
+    cachedItemsByRows = {};
 
     constructor(props) {
         super(props);
@@ -53,6 +78,21 @@ class Scheduler extends React.Component {
         return schedulerWidth / daysShown;
     }
 
+    get itemsByRows() {
+        if (!isEmptyObject(this.cachedItemsByRows)) return this.cachedItemsByRows;
+        this.cachedItemsByRows = this.items.reduce((previous, current) => {
+            const previousCopy = Object.assign(previous, {});
+            if (current.row in previous) {
+                previousCopy[current.row].push(current);
+            } else {
+                previousCopy[current.row] = [current];
+            }
+            return previousCopy;
+        }, {});
+        return this.cachedItemsByRows;
+    }
+
+
     handleClick = () => {
     };
 
@@ -64,10 +104,17 @@ class Scheduler extends React.Component {
         return (
             <div className={styles.wrapper}>
                 <div>
-                    schedulerWidth: {schedulerWidth}
+                    schedulerWidth: {schedulerWidth},
+                    itemsByRows: {this.itemsByRows.eliko[0].row}
                 </div>
                 <div className={styles.scheduler} ref={this.schedulerElement}>
-                    {this.columns.map(i => <div style={{width: `${this.columnWidth}px`}} className={styles.dayColumn} key={i}>{i}</div>)}
+                    <div className={styles.rows}>
+                        {this.rows.map(r => (
+                            <div key={r.id} className={styles.row}>
+                                {this.columns.map(i => <div style={{width: `${this.columnWidth}px`}} className={styles.dayColumn} key={i}>{i}</div>)}
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         );
