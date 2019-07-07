@@ -62,13 +62,20 @@ class Scheduler extends React.Component {
 
     get columns() {
         const {daysShown} = this.state;
+        const {visibleStartDate, visibleEndDate} = this.props;
 
         const cols = [];
+        const start = visibleStartDate.clone().add(-daysShown, 'days');
+        const end = visibleEndDate.clone().add(daysShown, 'days');
+
         // visible dates are the diff between visibleStartDate and visibleEndDate
         // which are the visible window, but actually rendered one more window to
         // the left, and one more window to the right.
-        for (let i = 0; i < daysShown * 3; i += 1) {
-            cols.push(i);
+        for (let i = start; i < end; i = i.add(1, 'days')) {
+            console.log(i.format('DD/MM'));
+            cols.push({
+                id: i.format('DD/MM')
+            });
         }
         return cols;
     }
@@ -111,7 +118,14 @@ class Scheduler extends React.Component {
                     <div className={styles.rows}>
                         {this.rows.map(r => (
                             <div key={r.id} className={styles.row}>
-                                {this.columns.map(i => <div style={{width: `${this.columnWidth}px`}} className={styles.dayColumn} key={i}>{i}</div>)}
+                                {console.log(this.columns)}
+                                {
+                                    this.columns.map(column => (
+                                        <div style={{width: `${this.columnWidth}px`}} className={styles.dayColumn} key={column.id}>
+                                            {column.id}
+                                        </div>
+                                    ))
+                                }
                             </div>
                         ))}
                     </div>
