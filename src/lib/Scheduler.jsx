@@ -8,30 +8,18 @@ import styles from './Scheduler.scss';
 class Scheduler extends React.Component {
     static propTypes = {
         visibleStartDate: PropTypes.instanceOf(moment).isRequired,
-        visibleEndDate: PropTypes.instanceOf(moment).isRequired
+        visibleEndDate: PropTypes.instanceOf(moment).isRequired,
+        items: PropTypes.arrayOf(PropTypes.exact({
+            id: PropTypes.string.isRequired,
+            row: PropTypes.string.isRequired,
+            startTime: PropTypes.instanceOf(moment).isRequired,
+            endTime: PropTypes.instanceOf(moment).isRequired
+        })).isRequired,
+        rows: PropTypes.arrayOf(PropTypes.exact({
+            id: PropTypes.string
+        })).isRequired,
+        ItemFunctionComponent: PropTypes.func.isRequired
     };
-
-    items = [
-        {
-            row: 'shmulik',
-            startTime: moment().add(2, 'seconds'),
-            endTime: moment().add(2, 'seconds').add(2, 'days').add(2, 'hours')
-        },
-        {
-            row: 'eliko',
-            startTime: moment().add(2, 'seconds').subtract(1, 'days'),
-            endTime: moment().add(2, 'seconds').add(1, 'days')
-        }
-    ];
-
-    rows = [
-        {
-            id: 'shmulik'
-        },
-        {
-            id: 'eliko'
-        }
-    ];
 
     cachedItemsByRows = {};
 
@@ -87,8 +75,9 @@ class Scheduler extends React.Component {
     }
 
     get itemsByRows() {
+        const {items} = this.props;
         if (!isEmptyObject(this.cachedItemsByRows)) return this.cachedItemsByRows;
-        this.cachedItemsByRows = this.items.reduce((previous, current) => {
+        this.cachedItemsByRows = items.reduce((previous, current) => {
             const previousCopy = Object.assign(previous, {});
             if (current.row in previous) {
                 previousCopy[current.row].push(current);
@@ -105,36 +94,27 @@ class Scheduler extends React.Component {
     };
 
     render() {
-        const {
-            schedulerWidth
-        } = this.state;
+        const {items, rows, ItemFunctionComponent} = this.props;
 
         return (
             <div className={styles.wrapper}>
-                <div>
-                    schedulerWidth: {schedulerWidth},
-                    itemsByRows: {this.itemsByRows.eliko[0].row}
-                </div>
                 <div className={styles.scheduler} ref={this.schedulerElement}>
                     <div className={styles.rows}>
-                        {this.rows.map(r => (
+                        {rows.map(r => (
                             <div key={r.id} className={styles.row}>
                                 {
                                     this.columns.map(column => (
                                         <div style={{width: `${this.columnWidth}px`}} className={styles.dayColumn} key={column.id}>
                                             {
-                                                this.items
+                                                items
                                                     .filter(item => item.row === r.id)
+                                                    .filter(item => item.startTime.isBetween(column.startDate, column.endDate))
                                                     .map((item) => {
                                                         const lengthInDays = item.endTime.diff(item.startTime, 'days', true);
                                                         const width = (lengthInDays * this.columnWidth).toFixed(3);
                                                         return (
-                                                            <div key={Math.random()} className={styles.itemWrapper}>
-                                                                {
-                                                                    item.startTime.isBetween(column.startDate, column.endDate)
-                                                                        ? <div style={{width: `${width}px`}} className={styles.item} />
-                                                                        : column.id
-                                                                }
+                                                            <div key={item.id} className={styles.itemWrapper} style={{width}}>
+                                                                <ItemFunctionComponent width={width} />
                                                             </div>
                                                         );
                                                     })
