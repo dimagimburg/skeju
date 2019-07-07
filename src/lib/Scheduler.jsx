@@ -14,13 +14,13 @@ class Scheduler extends React.Component {
     items = [
         {
             row: 'shmulik',
-            startTime: moment(),
-            endTime: moment().add(2, 'days')
+            startTime: moment().add(2, 'seconds'),
+            endTime: moment().add(2, 'seconds').add(2, 'days').add(2, 'hours')
         },
         {
             row: 'eliko',
-            startTime: moment().subtract(1, 'days'),
-            endTime: moment().add(1, 'days')
+            startTime: moment().add(2, 'seconds').subtract(1, 'days'),
+            endTime: moment().add(2, 'seconds').add(1, 'days')
         }
     ];
 
@@ -71,10 +71,11 @@ class Scheduler extends React.Component {
         // visible dates are the diff between visibleStartDate and visibleEndDate
         // which are the visible window, but actually rendered one more window to
         // the left, and one more window to the right.
-        for (let i = start; i < end; i = i.add(1, 'days')) {
-            console.log(i.format('DD/MM'));
+        for (let i = start; i < end; i = i.clone().add(1, 'days')) {
             cols.push({
-                id: i.format('DD/MM')
+                id: i.format('DD/MM'),
+                startDate: i.clone(),
+                endDate: i.clone().add(1, 'days')
             });
         }
         return cols;
@@ -118,11 +119,26 @@ class Scheduler extends React.Component {
                     <div className={styles.rows}>
                         {this.rows.map(r => (
                             <div key={r.id} className={styles.row}>
-                                {console.log(this.columns)}
                                 {
                                     this.columns.map(column => (
                                         <div style={{width: `${this.columnWidth}px`}} className={styles.dayColumn} key={column.id}>
-                                            {column.id}
+                                            {
+                                                this.items
+                                                    .filter(item => item.row === r.id)
+                                                    .map((item) => {
+                                                        const lengthInDays = item.endTime.diff(item.startTime, 'days', true);
+                                                        const width = (lengthInDays * this.columnWidth).toFixed(3);
+                                                        return (
+                                                            <div key={Math.random()} className={styles.itemWrapper}>
+                                                                {
+                                                                    item.startTime.isBetween(column.startDate, column.endDate)
+                                                                        ? <div style={{width: `${width}px`}} className={styles.item} />
+                                                                        : column.id
+                                                                }
+                                                            </div>
+                                                        );
+                                                    })
+                                            }
                                         </div>
                                     ))
                                 }

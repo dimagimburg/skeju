@@ -29,3 +29,16 @@
     background: burlywood;
     flex: 0 0 auto;
 }
+
+.itemWrapper{
+    position: relative;
+    height: 100%;
+}
+
+.item{
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: blue;
+}
