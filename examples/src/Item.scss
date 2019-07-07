@@ -1,8 +1,12 @@
 .item {
     position: absolute;
     left: 0;
-    top: 0;
-    height: 100%;
-    background: blue;
+    height: calc(100% - 20px);
+    background: rgba(85, 186, 222, 0.8);
     width: 100%;
+    border-radius: 50px 0 0 50px;
+    top: 10px;
+    border-right: 4px solid rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
 }

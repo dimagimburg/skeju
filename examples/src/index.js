@@ -17,6 +17,12 @@ const App = () => {
             row: 'eliko',
             startTime: moment().add(2, 'seconds').subtract(1, 'days'),
             endTime: moment().add(2, 'seconds').add(1, 'days')
+        },
+        {
+            id: '333',
+            row: 'eliko',
+            startTime: moment().add(2, 'seconds').add(3, 'days'),
+            endTime: moment().add(2, 'seconds').add(8, 'days')
         }
     ];
 

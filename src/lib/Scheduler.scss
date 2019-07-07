@@ -1,6 +1,5 @@
 .wrapper{
     width: 100%;
-    background: beige;
 }
 
 .scheduler {
@@ -26,8 +25,9 @@
 .dayColumn {
     padding: 0;
     height: 75px;
-    background: burlywood;
+    background: rgba(0,0,0,0.1);
     flex: 0 0 auto;
+    outline: 1px solid black;
 }
 
 .itemWrapper{
