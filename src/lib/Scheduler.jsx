@@ -3,21 +3,17 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import {diff} from './utils/timeUtils';
 import {isEmptyObject} from './utils/generalUtils';
+import Items from './components/Items/Items';
 import styles from './Scheduler.scss';
 
 class Scheduler extends React.Component {
     static propTypes = {
         visibleStartDate: PropTypes.instanceOf(moment).isRequired,
         visibleEndDate: PropTypes.instanceOf(moment).isRequired,
-        items: PropTypes.arrayOf(PropTypes.exact({
-            id: PropTypes.string.isRequired,
-            row: PropTypes.string.isRequired,
-            startTime: PropTypes.instanceOf(moment).isRequired,
-            endTime: PropTypes.instanceOf(moment).isRequired
-        })).isRequired,
         rows: PropTypes.arrayOf(PropTypes.exact({
             id: PropTypes.string
         })).isRequired,
+        items: PropTypes.array.isRequired,
         ItemFunctionComponent: PropTypes.func.isRequired
     };
 
@@ -105,20 +101,13 @@ class Scheduler extends React.Component {
                                 {
                                     this.columns.map(column => (
                                         <div style={{width: `${this.columnWidth}px`}} className={styles.dayColumn} key={column.id}>
-                                            {
-                                                items
-                                                    .filter(item => item.row === r.id)
-                                                    .filter(item => item.startTime.isBetween(column.startDate, column.endDate))
-                                                    .map((item) => {
-                                                        const lengthInDays = item.endTime.diff(item.startTime, 'days', true);
-                                                        const width = (lengthInDays * this.columnWidth).toFixed(3);
-                                                        return (
-                                                            <div key={item.id} className={styles.itemWrapper} style={{width}}>
-                                                                <ItemFunctionComponent width={width} />
-                                                            </div>
-                                                        );
-                                                    })
-                                            }
+                                            <Items
+                                                row={r}
+                                                items={items}
+                                                itemFunctionComponent={ItemFunctionComponent}
+                                                column={column}
+                                                columnWidth={this.columnWidth}
+                                            />
                                         </div>
                                     ))
                                 }
