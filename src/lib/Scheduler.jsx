@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {diff} from './utils/timeUtils';
 import {isEmptyObject} from './utils/generalUtils';
 import Items from './components/Items/Items';
+import Column from './components/Column/Column';
 import styles from './Scheduler.scss';
 
 class Scheduler extends React.Component {
@@ -14,7 +15,7 @@ class Scheduler extends React.Component {
             id: PropTypes.string
         })).isRequired,
         items: PropTypes.array.isRequired,
-        ItemFunctionComponent: PropTypes.func.isRequired
+        renderItem: PropTypes.func.isRequired
     };
 
     cachedItemsByRows = {};
@@ -90,7 +91,7 @@ class Scheduler extends React.Component {
     };
 
     render() {
-        const {items, rows, ItemFunctionComponent} = this.props;
+        const {items, rows, renderItem} = this.props;
 
         return (
             <div className={styles.wrapper}>
@@ -100,15 +101,15 @@ class Scheduler extends React.Component {
                             <div key={r.id} className={styles.row}>
                                 {
                                     this.columns.map(column => (
-                                        <div style={{width: `${this.columnWidth}px`}} className={styles.dayColumn} key={column.id}>
+                                        <Column key={column.id} width={this.columnWidth}>
                                             <Items
                                                 row={r}
                                                 items={items}
-                                                itemFunctionComponent={ItemFunctionComponent}
+                                                renderItem={renderItem}
                                                 column={column}
                                                 columnWidth={this.columnWidth}
                                             />
-                                        </div>
+                                        </Column>
                                     ))
                                 }
                             </div>

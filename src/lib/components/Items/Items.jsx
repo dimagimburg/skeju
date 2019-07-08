@@ -5,20 +5,19 @@ import styles from './Items.scss';
 
 export default function Items(props) {
     const {
-        items, itemFunctionComponent, row, column, columnWidth
+        items, renderItem, row, column, columnWidth
     } = props;
     return (
         <div>
             {
                 items
-                    .filter(item => item.row === row.id)
-                    .filter(item => item.startTime.isBetween(column.startDate, column.endDate))
+                    .filter(item => item.row === row.id && item.startTime.isBetween(column.startDate, column.endDate))
                     .map((item) => {
                         const lengthInDays = item.endTime.diff(item.startTime, 'days', true);
                         const width = (lengthInDays * columnWidth).toFixed(3);
                         return (
                             <div key={item.id} className={styles.itemWrapper} style={{width}}>
-                                {itemFunctionComponent({width})}
+                                {renderItem({width})}
                             </div>
                         );
                     })
@@ -30,7 +29,7 @@ export default function Items(props) {
 Items.propTypes = {
     row: PropTypes.any.isRequired,
     column: PropTypes.any.isRequired,
-    itemFunctionComponent: PropTypes.func.isRequired,
+    renderItem: PropTypes.func.isRequired,
     items: PropTypes.arrayOf(PropTypes.exact({
         id: PropTypes.string.isRequired,
         row: PropTypes.string.isRequired,

@@ -42,7 +42,7 @@ const App = () => {
                 visibleEndDate={moment().add(22, 'days')}
                 items={items}
                 rows={rows}
-                ItemFunctionComponent={Item}
+                renderItem={(props) => <Item {...props} />}
             />
         </div>
     );
