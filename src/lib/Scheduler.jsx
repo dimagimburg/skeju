@@ -1,124 +1,103 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import {diff} from './utils/timeUtils';
-import {isEmptyObject} from './utils/generalUtils';
+import {StateProvider, useStateValue} from './state/SchedulerState';
 import Items from './components/Items/Items';
 import Column from './components/Column/Column';
+import Header from './components/Header/Header';
 import styles from './Scheduler.scss';
 
-class Scheduler extends React.Component {
-    static propTypes = {
-        visibleStartDate: PropTypes.instanceOf(moment).isRequired,
-        visibleEndDate: PropTypes.instanceOf(moment).isRequired,
-        rows: PropTypes.arrayOf(PropTypes.exact({
-            id: PropTypes.string
-        })).isRequired,
-        items: PropTypes.array.isRequired,
-        renderItem: PropTypes.func.isRequired
-    };
+import initialState from './state/initialState';
+import reducer from './state/reducer';
+import {uiActions} from './state/actions';
 
-    cachedItemsByRows = {};
+import useColumnWidth from './hooks/computed/useColumnWidth';
+import useColumns from './hooks/computed/useColumns';
 
-    constructor(props) {
-        super(props);
-        this.schedulerElement = React.createRef();
-    }
+import {notVisibleBufferWindowsEachSide} from './constants';
 
-    state = {
-        schedulerWidth: 0,
-        daysShown: 0
-    };
+const Scheduler = (props) => {
+    const {
+        visibleStartDate, visibleEndDate, rows, items, renderItem
+    } = props;
 
-    componentDidMount() {
-        const {visibleStartDate, visibleEndDate} = this.props;
+    // state
+    const [{ ui: {schedulerWidth} }, dispatch] = useStateValue();
 
-        this.setState({
-            schedulerWidth: this.schedulerElement.current.getBoundingClientRect().width,
-            daysShown: diff(visibleStartDate, visibleEndDate)
+    // computed values
+    const columnWidth = useColumnWidth();
+    const columns = useColumns(notVisibleBufferWindowsEachSide);
+
+    // refs
+    const schedulerRef = useRef(null);
+
+    // component load or update
+    useEffect(() => {
+        // update schedulerWidth
+        dispatch({
+            type: uiActions.SET_SCHEDULER_WIDTH,
+            payload: {
+                schedulerWidth: schedulerRef.current.getBoundingClientRect().width
+            }
         });
 
-        // scroll to middle horizontally
-        setTimeout(() => {
-            const {schedulerWidth} = this.state;
-            this.schedulerElement.current.scrollLeft = schedulerWidth;
-        }, 0);
-    }
-
-    get columns() {
-        const {daysShown} = this.state;
-        const {visibleStartDate, visibleEndDate} = this.props;
-
-        const cols = [];
-        const start = visibleStartDate.clone().add(-daysShown, 'days');
-        const end = visibleEndDate.clone().add(daysShown, 'days');
-
-        // visible dates are the diff between visibleStartDate and visibleEndDate
-        // which are the visible window, but actually rendered one more window to
-        // the left, and one more window to the right.
-        for (let i = start; i < end; i = i.clone().add(1, 'days')) {
-            cols.push({
-                id: i.format('DD/MM'),
-                startDate: i.clone(),
-                endDate: i.clone().add(1, 'days')
-            });
-        }
-        return cols;
-    }
-
-    get columnWidth() {
-        const {daysShown, schedulerWidth} = this.state;
-        return schedulerWidth / daysShown;
-    }
-
-    get itemsByRows() {
-        const {items} = this.props;
-        if (!isEmptyObject(this.cachedItemsByRows)) return this.cachedItemsByRows;
-        this.cachedItemsByRows = items.reduce((previous, current) => {
-            const previousCopy = Object.assign(previous, {});
-            if (current.row in previous) {
-                previousCopy[current.row].push(current);
-            } else {
-                previousCopy[current.row] = [current];
+        // update visible start date
+        dispatch({
+            type: uiActions.SET_VISIBLE_START_DATE,
+            payload: {
+                visibleStartDate
             }
-            return previousCopy;
-        }, {});
-        return this.cachedItemsByRows;
-    }
+        });
 
+        // update visible end date
+        dispatch({
+            type: uiActions.SET_VISIBLE_END_DATE,
+            payload: {
+                visibleEndDate
+            }
+        });
 
-    handleClick = () => {
-    };
+        setTimeout(() => {
+            schedulerRef.current.scrollLeft = schedulerWidth * notVisibleBufferWindowsEachSide;
+        }, 0);
+    }, [schedulerWidth]);
 
-    render() {
-        const {items, rows, renderItem} = this.props;
-
-        return (
-            <div className={styles.wrapper}>
-                <div className={styles.scheduler} ref={this.schedulerElement}>
-                    <div className={styles.rows}>
-                        {rows.map(r => (
-                            <div key={r.id} className={styles.row}>
-                                {
-                                    this.columns.map(column => (
-                                        <Column key={column.id} width={this.columnWidth}>
-                                            <Items
-                                                row={r}
-                                                items={items}
-                                                renderItem={renderItem}
-                                                column={column}
-                                                columnWidth={this.columnWidth}
-                                            />
-                                        </Column>
-                                    ))
-                                }
-                            </div>
-                        ))}
-                    </div>
+    return (
+        <div className={styles.wrapper}>
+            <div className={styles.scheduler} ref={schedulerRef}>
+                <div className={styles.rows}>
+                    <Header columnWidth={columnWidth} />
+                    {rows.map(r => (
+                        <div key={r.id} className={styles.row}>
+                            {
+                                columns.map(column => (
+                                    <Column key={column.id} width={columnWidth}>
+                                        <Items
+                                            row={r}
+                                            items={items}
+                                            renderItem={renderItem}
+                                            column={column}
+                                            columnWidth={columnWidth}
+                                        />
+                                    </Column>
+                                ))
+                            }
+                        </div>
+                    ))}
                 </div>
             </div>
-        );
-    }
-}
+        </div>
+    );
+};
 
-export default Scheduler;
+Scheduler.propTypes = {
+    visibleStartDate: PropTypes.instanceOf(moment).isRequired,
+    visibleEndDate: PropTypes.instanceOf(moment).isRequired,
+    rows: PropTypes.arrayOf(PropTypes.exact({
+        id: PropTypes.string
+    })).isRequired,
+    items: PropTypes.array.isRequired,
+    renderItem: PropTypes.func.isRequired
+};
+
+export default props => <StateProvider initialState={initialState} reducer={reducer}><Scheduler {...props} /></StateProvider>;
