@@ -22,6 +22,8 @@ const Scheduler = (props) => {
         visibleStartDate, visibleEndDate, rows, items, renderItem
     } = props;
 
+    const {setSchedulerWidth, setVisibleStartDate, setVisibleEndDate} = uiActions;
+
     // state
     const [{ ui: {schedulerWidth} }, dispatch] = useStateValue();
 
@@ -35,28 +37,13 @@ const Scheduler = (props) => {
     // component load or update
     useEffect(() => {
         // update schedulerWidth
-        dispatch({
-            type: uiActions.SET_SCHEDULER_WIDTH,
-            payload: {
-                schedulerWidth: schedulerRef.current.getBoundingClientRect().width
-            }
-        });
+        dispatch(setSchedulerWidth(schedulerRef.current.getBoundingClientRect().width));
 
         // update visible start date
-        dispatch({
-            type: uiActions.SET_VISIBLE_START_DATE,
-            payload: {
-                visibleStartDate
-            }
-        });
+        dispatch(setVisibleStartDate(visibleStartDate));
 
         // update visible end date
-        dispatch({
-            type: uiActions.SET_VISIBLE_END_DATE,
-            payload: {
-                visibleEndDate
-            }
-        });
+        dispatch(setVisibleEndDate(visibleEndDate));
 
         setTimeout(() => {
             schedulerRef.current.scrollLeft = schedulerWidth * notVisibleBufferWindowsEachSide;

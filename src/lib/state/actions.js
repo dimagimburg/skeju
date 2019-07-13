@@ -1,3 +1,3 @@
-import ui from './ui/actions';
+import {setSchedulerWidth, setVisibleEndDate, setVisibleStartDate} from './ui/actions';
 
-export const uiActions = ui;
+export const uiActions = {setSchedulerWidth, setVisibleEndDate, setVisibleStartDate};
