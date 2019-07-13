@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import {StateProvider, useStateValue} from './state/SchedulerState';
+import {StateProvider} from './state/SchedulerState';
 import Items from './components/Items/Items';
 import Column from './components/Column/Column';
 import Header from './components/Header/Header';
@@ -11,6 +11,7 @@ import initialState from './state/initialState';
 import reducer from './state/reducer';
 import {uiActions} from './state/actions';
 
+import useStateValue from './hooks/useStateValue';
 import useColumnWidth from './hooks/computed/useColumnWidth';
 import useColumns from './hooks/computed/useColumns';
 

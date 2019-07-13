@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Header.scss';
-import {useStateValue} from '../../state/SchedulerState';
+import useStateValue from '../../hooks/useStateValue';
 
 export default function Header() {
     const [{ ui: {schedulerWidth} }, dispatch] = useStateValue();

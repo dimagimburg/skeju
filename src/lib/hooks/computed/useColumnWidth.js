@@ -1,5 +1,5 @@
 import {useMemo} from 'react';
-import {useStateValue} from '../../state/SchedulerState';
+import useStateValue from '../useStateValue';
 import useDaysVisible from './useDaysVisible';
 
 export default function useColumnWidth() {

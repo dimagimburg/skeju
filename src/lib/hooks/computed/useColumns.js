@@ -1,5 +1,5 @@
 import {useMemo} from 'react';
-import {useStateValue} from '../../state/SchedulerState';
+import useStateValue from '../useStateValue';
 import {diffInDays} from '../../utils/timeUtils';
 
 export default function useColumns(notVisibleBufferWindowsEachSide) {
