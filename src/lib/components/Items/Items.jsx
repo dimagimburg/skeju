@@ -2,11 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import styles from './Items.scss';
+import useColumnWidth from '../../hooks/computed/useColumnWidth';
 
 export default function Items(props) {
     const {
-        items, renderItem, row, column, columnWidth
+        items, renderItem, row, column
     } = props;
+
+    const columnWidth = useColumnWidth();
+
     return (
         <div>
             {
@@ -35,6 +39,5 @@ Items.propTypes = {
         row: PropTypes.string.isRequired,
         startTime: PropTypes.instanceOf(moment).isRequired,
         endTime: PropTypes.instanceOf(moment).isRequired
-    })).isRequired,
-    columnWidth: PropTypes.number.isRequired
+    })).isRequired
 };

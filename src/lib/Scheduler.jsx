@@ -12,7 +12,6 @@ import reducer from './state/reducer';
 import {uiActions} from './state/actions';
 
 import useStateValue from './hooks/useStateValue';
-import useColumnWidth from './hooks/computed/useColumnWidth';
 import useColumns from './hooks/computed/useColumns';
 
 import {notVisibleBufferWindowsEachSide} from './constants';
@@ -28,7 +27,6 @@ const Scheduler = (props) => {
     const [{ ui: {schedulerWidth} }, dispatch] = useStateValue();
 
     // computed values
-    const columnWidth = useColumnWidth();
     const columns = useColumns(notVisibleBufferWindowsEachSide);
 
     // refs
@@ -45,27 +43,25 @@ const Scheduler = (props) => {
         // update visible end date
         dispatch(setVisibleEndDate(visibleEndDate));
 
-        setTimeout(() => {
-            schedulerRef.current.scrollLeft = schedulerWidth * notVisibleBufferWindowsEachSide;
-        }, 0);
+        // set horizontal scroll bar in the middle
+        schedulerRef.current.scrollLeft = schedulerWidth * notVisibleBufferWindowsEachSide;
     }, [schedulerWidth]);
 
     return (
         <div className={styles.wrapper}>
             <div className={styles.scheduler} ref={schedulerRef}>
                 <div className={styles.rows}>
-                    <Header columnWidth={columnWidth} />
+                    <Header />
                     {rows.map(r => (
                         <div key={r.id} className={styles.row}>
                             {
                                 columns.map(column => (
-                                    <Column key={column.id} width={columnWidth}>
+                                    <Column key={column.id}>
                                         <Items
                                             row={r}
                                             items={items}
                                             renderItem={renderItem}
                                             column={column}
-                                            columnWidth={columnWidth}
                                         />
                                     </Column>
                                 ))
