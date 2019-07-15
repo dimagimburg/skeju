@@ -1,13 +1,8 @@
 import {useMemo} from 'react';
 import useStateValue from '../useStateValue';
-import {diffInDays} from '../../utils/timeUtils';
 
-export default function useColumns(notVisibleBufferWindowsEachSide) {
-    const [{ ui: {visibleStartDate, visibleEndDate} }, dispatch] = useStateValue();
-
-    const daysInvisibleEachSide = diffInDays(visibleStartDate, visibleEndDate) * notVisibleBufferWindowsEachSide;
-    const renderedStartDate = visibleStartDate.clone().add(-daysInvisibleEachSide, 'days');
-    const renderedEndDate = visibleEndDate.clone().add(daysInvisibleEachSide, 'days');
+export default function useColumns() {
+    const [{ ui: {hiddenStartDate, hiddenEndDate} }, dispatch] = useStateValue();
 
     return useMemo(
         () => {
@@ -16,7 +11,7 @@ export default function useColumns(notVisibleBufferWindowsEachSide) {
             // visible dates are the diffInDays between visibleStartDate and visibleEndDate
             // which are the visible window, but actually rendered one more window to
             // the left, and one more window to the right.
-            for (let i = renderedStartDate; i < renderedEndDate; i = i.clone().add(1, 'days')) {
+            for (let i = hiddenStartDate; i < hiddenEndDate; i = i.clone().add(1, 'days')) {
                 cols.push({
                     id: i.format('DD/MM'),
                     startDate: i.clone(),
@@ -25,6 +20,6 @@ export default function useColumns(notVisibleBufferWindowsEachSide) {
             }
             return cols;
         },
-        [visibleStartDate, visibleEndDate]
+        [hiddenStartDate, hiddenEndDate]
     );
 }

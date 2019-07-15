@@ -2,10 +2,9 @@ import React from 'react';
 import styles from './Header.scss';
 import useColumns from '../../hooks/computed/useColumns';
 import useColumnWidth from '../../hooks/computed/useColumnWidth';
-import {notVisibleBufferWindowsEachSide} from '../../constants';
 
 export default function Header() {
-    const columns = useColumns(notVisibleBufferWindowsEachSide);
+    const columns = useColumns();
     const columnWidth = useColumnWidth();
 
     return (

@@ -13,6 +13,7 @@ import {uiActions} from './state/actions';
 
 import useStateValue from './hooks/useStateValue';
 import useColumns from './hooks/computed/useColumns';
+import useDaysInvisibleInEachSide from './hooks/computed/useDaysInvisibleInEachSide';
 
 import {notVisibleBufferWindowsEachSide} from './constants';
 
@@ -21,13 +22,16 @@ const Scheduler = (props) => {
         visibleStartDate, visibleEndDate, rows, items, renderItem
     } = props;
 
-    const {setSchedulerWidth, setVisibleStartDate, setVisibleEndDate} = uiActions;
+    const {
+        setSchedulerWidth, setVisibleDate, setHiddenEndDate, setHiddenStartDate
+    } = uiActions;
 
     // state
     const [{ ui: {schedulerWidth} }, dispatch] = useStateValue();
 
     // computed values
-    const columns = useColumns(notVisibleBufferWindowsEachSide);
+    const columns = useColumns();
+    const daysInvisibleInEachSide = useDaysInvisibleInEachSide();
 
     // refs
     const schedulerRef = useRef(null);
@@ -37,15 +41,21 @@ const Scheduler = (props) => {
         // update schedulerWidth
         dispatch(setSchedulerWidth(schedulerRef.current.getBoundingClientRect().width));
 
-        // update visible start date
-        dispatch(setVisibleStartDate(visibleStartDate));
+        // update visible date
+        dispatch(setVisibleDate(visibleStartDate, visibleEndDate));
 
-        // update visible end date
-        dispatch(setVisibleEndDate(visibleEndDate));
+        setTimeout(() => {
+            // set horizontal scroll bar in the middle
+            schedulerRef.current.scrollLeft = schedulerWidth * notVisibleBufferWindowsEachSide;
+        }, 0);
+    }, [schedulerWidth, visibleStartDate, visibleEndDate]);
 
-        // set horizontal scroll bar in the middle
-        schedulerRef.current.scrollLeft = schedulerWidth * notVisibleBufferWindowsEachSide;
-    }, [schedulerWidth]);
+    // on load
+    useEffect(() => {
+        // update hidden dates
+        dispatch(setHiddenStartDate(visibleStartDate.clone().add(-daysInvisibleInEachSide, 'days')));
+        dispatch(setHiddenEndDate(visibleEndDate.clone().add(daysInvisibleInEachSide, 'days')));
+    }, [daysInvisibleInEachSide]);
 
     return (
         <div className={styles.wrapper}>

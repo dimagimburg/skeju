@@ -1,11 +1,13 @@
 const SET_SCHEDULER_WIDTH = 'SET_SCHEDULER_WIDTH';
-const SET_VISIBLE_START_DATE = 'SET_VISIBLE_START_DATE';
-const SET_VISIBLE_END_DATE = 'SET_VISIBLE_END_DATE';
+const SET_VISIBLE_DATE = 'SET_VISIBLE_DATE';
+const SET_HIDDEN_START_DATE = 'SET_HIDDEN_START_DATE';
+const SET_HIDDEN_END_DATE = 'SET_HIDDEN_END_DATE';
 
 export default {
     SET_SCHEDULER_WIDTH,
-    SET_VISIBLE_START_DATE,
-    SET_VISIBLE_END_DATE
+    SET_VISIBLE_DATE,
+    SET_HIDDEN_START_DATE,
+    SET_HIDDEN_END_DATE
 };
 
 export function setSchedulerWidth(schedulerWidth) {
@@ -17,20 +19,30 @@ export function setSchedulerWidth(schedulerWidth) {
     };
 }
 
-export function setVisibleStartDate(visibleStartDate) {
+export function setVisibleDate(visibleStartDate, visibleEndDate) {
     return {
-        type: SET_VISIBLE_START_DATE,
+        type: SET_VISIBLE_DATE,
         payload: {
-            visibleStartDate
+            visibleStartDate,
+            visibleEndDate
         }
     };
 }
 
-export function setVisibleEndDate(visibleEndDate) {
+export function setHiddenStartDate(hiddenStartDate) {
     return {
-        type: SET_VISIBLE_END_DATE,
+        type: SET_HIDDEN_START_DATE,
         payload: {
-            visibleEndDate
+            hiddenStartDate
+        }
+    };
+}
+
+export function setHiddenEndDate(hiddenEndDate) {
+    return {
+        type: SET_HIDDEN_END_DATE,
+        payload: {
+            hiddenEndDate
         }
     };
 }
