@@ -1,5 +1,6 @@
 .wrapper{
     width: 100%;
+    position: relative;
 }
 
 .scheduler {
@@ -9,6 +10,7 @@
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
+    position: relative;
 }
 
 .rows{
@@ -20,4 +22,22 @@
     width: 100%;
     display: flex;
     flex-direction: row;
+}
+
+.leftCollisionDetector{
+    position: absolute;
+    left: 0;
+    height: 100%;
+    background: pink;
+    width: 20px;
+    z-index:1;
+}
+
+.rightCollisionDetector{
+    position: absolute;
+    right: 0;
+    height: 100%;
+    background: pink;
+    width: 20px;
+    z-index:1;
 }

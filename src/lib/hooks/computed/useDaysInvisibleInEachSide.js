@@ -4,11 +4,12 @@ import {diffInDays} from '../../utils/timeUtils';
 import {notVisibleBufferWindowsEachSide} from '../../constants';
 
 export default function useDaysInvisibleInEachSide() {
-    const [{ ui: {visibleStartDate, visibleEndDate} }, dispatch] = useStateValue();
-    const daysInvisibleEachSide = diffInDays(visibleStartDate, visibleEndDate) * notVisibleBufferWindowsEachSide;
+    const [{ ui: {initialVisibleStartDate, initialVisibleEndDate} }, dispatch] = useStateValue();
+
+    const daysInvisibleEachSide = diffInDays(initialVisibleStartDate, initialVisibleEndDate) * notVisibleBufferWindowsEachSide;
 
     return useMemo(
         () => daysInvisibleEachSide,
-        [visibleStartDate, visibleEndDate]
+        [initialVisibleStartDate, initialVisibleEndDate]
     );
 }

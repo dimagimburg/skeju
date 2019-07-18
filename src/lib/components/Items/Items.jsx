@@ -1,30 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import styles from './Items.scss';
-import useColumnWidth from '../../hooks/computed/useColumnWidth';
+import Item from '../Item/Item';
 
 export default function Items(props) {
     const {
         items, renderItem, row, column
     } = props;
 
-    const columnWidth = useColumnWidth();
-
     return (
         <div>
             {
                 items
                     .filter(item => item.row === row.id && item.startTime.isBetween(column.startDate, column.endDate))
-                    .map((item) => {
-                        const lengthInDays = item.endTime.diff(item.startTime, 'days', true);
-                        const width = (lengthInDays * columnWidth).toFixed(3);
-                        return (
-                            <div key={item.id} className={styles.itemWrapper} style={{width}}>
-                                {renderItem({width})}
-                            </div>
-                        );
-                    })
+                    .map(item => <Item key={item.id} item={item} renderItem={renderItem} />)
             }
         </div>
     );

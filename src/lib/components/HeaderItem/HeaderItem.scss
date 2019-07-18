@@ -1,0 +1,12 @@
+.headerColumn{
+    padding: 0;
+    height: 75px;
+    background: rgba(0,0,0,0.1);
+    background: dimgrey;
+    flex: 0 0 auto;
+    outline: 1px solid black;
+}
+
+.visible{
+    background: blue;
+}

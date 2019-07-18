@@ -4,8 +4,8 @@ const now = moment();
 
 export default {
     schedulerWidth: 0,
-    visibleStartDate: now,
-    visibleEndDate: now,
+    initialVisibleStartDate: now,
+    initialVisibleEndDate: now,
     hiddenStartDate: now,
     hiddenEndDate: now
 };

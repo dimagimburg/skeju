@@ -3,10 +3,9 @@ import useStateValue from '../useStateValue';
 import {diffInDays} from '../../utils/timeUtils';
 
 export default function useDaysVisible() {
-    const [{ ui: {visibleStartDate, visibleEndDate} }, dispatch] = useStateValue();
-
+    const [{ ui: {initialVisibleStartDate, initialVisibleEndDate} }, dispatch] = useStateValue();
     return useMemo(
-        () => diffInDays(visibleStartDate, visibleEndDate),
-        [visibleStartDate, visibleEndDate]
+        () => diffInDays(initialVisibleStartDate, initialVisibleEndDate),
+        [initialVisibleStartDate, initialVisibleEndDate]
     );
 }

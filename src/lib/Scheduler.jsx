@@ -5,6 +5,7 @@ import {StateProvider} from './state/SchedulerState';
 import Items from './components/Items/Items';
 import Column from './components/Column/Column';
 import Header from './components/Header/Header';
+import Debug from './components/Debug/Debug';
 import styles from './Scheduler.scss';
 
 import initialState from './state/initialState';
@@ -23,7 +24,7 @@ const Scheduler = (props) => {
     } = props;
 
     const {
-        setSchedulerWidth, setVisibleDate, setHiddenEndDate, setHiddenStartDate
+        setSchedulerWidth, setInitialVisibleDates, setHiddenEndDate, setHiddenStartDate
     } = uiActions;
 
     // state
@@ -42,7 +43,7 @@ const Scheduler = (props) => {
         dispatch(setSchedulerWidth(schedulerRef.current.getBoundingClientRect().width));
 
         // update visible date
-        dispatch(setVisibleDate(visibleStartDate, visibleEndDate));
+        dispatch(setInitialVisibleDates(visibleStartDate, visibleEndDate));
 
         setTimeout(() => {
             // set horizontal scroll bar in the middle
@@ -50,7 +51,7 @@ const Scheduler = (props) => {
         }, 0);
     }, [schedulerWidth, visibleStartDate, visibleEndDate]);
 
-    // on load
+    // on update
     useEffect(() => {
         // update hidden dates
         dispatch(setHiddenStartDate(visibleStartDate.clone().add(-daysInvisibleInEachSide, 'days')));
@@ -59,9 +60,10 @@ const Scheduler = (props) => {
 
     return (
         <div className={styles.wrapper}>
+            <Debug />
             <div className={styles.scheduler} ref={schedulerRef}>
                 <div className={styles.rows}>
-                    <Header />
+                    <Header schedulerRef={schedulerRef} />
                     {rows.map(r => (
                         <div key={r.id} className={styles.row}>
                             {

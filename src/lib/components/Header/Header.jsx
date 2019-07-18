@@ -1,21 +1,23 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './Header.scss';
 import useColumns from '../../hooks/computed/useColumns';
-import useColumnWidth from '../../hooks/computed/useColumnWidth';
+import HeaderItem from '../HeaderItem/HeaderItem';
 
-export default function Header() {
+export default function Header(props) {
+    const {
+        schedulerRef
+    } = props;
+
     const columns = useColumns();
-    const columnWidth = useColumnWidth();
 
     return (
         <div className={styles.header}>
-            {
-                columns.map(column => (
-                    <div key={column.id} style={{width: `${columnWidth}px`}} className={styles.headerColumn}>
-                        {column.id}
-                    </div>
-                ))
-            }
+            { columns.map(column => <HeaderItem key={column.id} column={column} schedulerRef={schedulerRef} />) }
         </div>
     );
 }
+
+Header.propTypes = {
+    schedulerRef: PropTypes.any.isRequired
+};

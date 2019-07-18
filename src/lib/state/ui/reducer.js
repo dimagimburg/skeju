@@ -2,7 +2,7 @@ import actions from './actions';
 
 export default (state, action) => {
     const {
-        SET_SCHEDULER_WIDTH, SET_VISIBLE_DATE, SET_VISIBLE_END_DATE, SET_HIDDEN_START_DATE, SET_HIDDEN_END_DATE
+        SET_SCHEDULER_WIDTH, SET_INITIAL_VISIBLE_DATE, SET_VISIBLE_END_DATE, SET_HIDDEN_START_DATE, SET_HIDDEN_END_DATE
     } = actions;
     const {payload, type} = action;
 
@@ -13,17 +13,17 @@ export default (state, action) => {
             schedulerWidth: payload.schedulerWidth
         };
 
-    case SET_VISIBLE_DATE:
+    case SET_INITIAL_VISIBLE_DATE:
         return {
             ...state,
-            visibleStartDate: payload.visibleStartDate,
-            visibleEndDate: payload.visibleEndDate
+            initialVisibleStartDate: payload.initialVisibleStartDate,
+            initialVisibleEndDate: payload.initialVisibleEndDate
         };
 
     case SET_VISIBLE_END_DATE:
         return {
             ...state,
-            visibleEndDate: payload.visibleEndDate
+            initialVisibleEndDate: payload.visibleEndDate
         };
 
     case SET_HIDDEN_START_DATE:

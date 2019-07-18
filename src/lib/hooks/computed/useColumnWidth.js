@@ -3,11 +3,11 @@ import useStateValue from '../useStateValue';
 import useDaysVisible from './useDaysVisible';
 
 export default function useColumnWidth() {
-    const [{ ui: {schedulerWidth, visibleStartDate, visibleEndDate} }, dispatch] = useStateValue();
+    const [{ ui: {schedulerWidth, initialVisibleStartDate, initialVisibleEndDate} }, dispatch] = useStateValue();
     const daysVisible = useDaysVisible();
 
     return useMemo(
         () => schedulerWidth / daysVisible,
-        [schedulerWidth, visibleStartDate, visibleEndDate]
+        [schedulerWidth, initialVisibleStartDate, initialVisibleEndDate]
     );
 }
