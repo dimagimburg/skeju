@@ -7,5 +7,7 @@ export default {
     initialVisibleStartDate: now,
     initialVisibleEndDate: now,
     hiddenStartDate: now,
-    hiddenEndDate: now
+    hiddenEndDate: now,
+    leftVisibleDate: null,
+    rightVisibleDate: null
 };

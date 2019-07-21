@@ -1,7 +1,7 @@
 import {
-    setSchedulerWidth, setInitialVisibleDates, setHiddenStartDate, setHiddenEndDate
+    setSchedulerWidth, setInitialVisibleDates, setHiddenStartDate, setHiddenEndDate, setLeftVisibleDate
 } from './ui/actions';
 
 export const uiActions = {
-    setSchedulerWidth, setInitialVisibleDates, setHiddenStartDate, setHiddenEndDate
+    setSchedulerWidth, setInitialVisibleDates, setHiddenStartDate, setHiddenEndDate, setLeftVisibleDate
 };

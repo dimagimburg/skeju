@@ -3,17 +3,23 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import styles from './HeaderItem.scss';
 import useColumnWidth from '../../hooks/computed/useColumnWidth';
+import useStateValue from '../../hooks/useStateValue';
+import {uiActions} from '../../state/actions';
 import {isChildVisibleHorizontallyInsideParent} from '../../utils/uiUtils';
 
 export default function HeaderItem(props) {
     const {
         schedulerRef,
-        column
+        column: {id, startDate}
     } = props;
 
+    const {setLeftVisibleDate} = uiActions;
+
+    const [state, dispatch] = useStateValue();
     const columnWidth = useColumnWidth();
     const itemRef = useRef(null);
     const [visible, setVisible] = useState(false);
+    const [x, setX] = useState(0);
 
     useLayoutEffect(() => {
         function visibilityHandler(e) {
@@ -21,6 +27,7 @@ export default function HeaderItem(props) {
                 // here push the value inside a place that decides if it is the man or the min and exposes it as a global state.
                 // maybe use the reducer
                 setVisible(true);
+                // dispatch(setLeftVisibleDate(startDate));
             } else {
                 setVisible(false);
             }
@@ -33,7 +40,7 @@ export default function HeaderItem(props) {
 
     return (
         <div style={{width: `${columnWidth}px`}} className={cx(styles.headerColumn, visible ? styles.visible : '')} ref={itemRef}>
-            !{column.id}!
+            !{id}!
         </div>
 
     );

@@ -2,7 +2,8 @@ import actions from './actions';
 
 export default (state, action) => {
     const {
-        SET_SCHEDULER_WIDTH, SET_INITIAL_VISIBLE_DATE, SET_VISIBLE_END_DATE, SET_HIDDEN_START_DATE, SET_HIDDEN_END_DATE
+        SET_SCHEDULER_WIDTH, SET_INITIAL_VISIBLE_DATE, SET_VISIBLE_END_DATE, SET_HIDDEN_START_DATE, SET_HIDDEN_END_DATE,
+        SET_LEFT_VISIBLE_DATE
     } = actions;
     const {payload, type} = action;
 
@@ -37,6 +38,16 @@ export default (state, action) => {
             ...state,
             hiddenEndDate: payload.hiddenEndDate
         };
+
+    case SET_LEFT_VISIBLE_DATE:
+        console.log(state.leftVisibleDate, payload.leftVisibleDate);
+        if (!state.leftVisibleDate || payload.leftVisibleDate < state.leftVisibleDate) {
+            return {
+                ...state,
+                leftVisibleDate: payload.leftVisibleDate
+            };
+        }
+        return state;
 
     default:
         return state;
