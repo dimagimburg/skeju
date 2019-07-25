@@ -1,4 +1,4 @@
-import Scheduler from './lib/Scheduler';
+import Scheduler from './lib/index';
 
 export {
     Scheduler

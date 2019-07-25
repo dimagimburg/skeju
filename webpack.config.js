@@ -8,7 +8,7 @@ const htmlWebpackPlugin = new HtmlWebpackPlugin({
 
 module.exports = {
     devtool: 'source-map',
-    entry: path.join(__dirname, "examples/src/index.js"),
+    entry: path.join(__dirname, "examples/src/index.jsx"),
     output: {
         path: path.join(__dirname, "examples/dist"),
         filename: "bundle.js"

@@ -1,16 +1,13 @@
-import React, {useRef, useLayoutEffect} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import cx from 'classnames';
-import useColumnWidth from '../../hooks/computed/useColumnWidth';
 import styles from './Item.scss';
 
 export default function Items(props) {
     const {
-        item, renderItem
+        item, renderItem, columnWidth
     } = props;
-
-    const columnWidth = useColumnWidth();
 
     const lengthInDays = item.endTime.diff(item.startTime, 'days', true);
     const width = (lengthInDays * columnWidth).toFixed(3);
@@ -29,5 +26,6 @@ Items.propTypes = {
         startTime: PropTypes.instanceOf(moment).isRequired,
         endTime: PropTypes.instanceOf(moment).isRequired
     }).isRequired,
-    renderItem: PropTypes.func.isRequired
+    renderItem: PropTypes.func.isRequired,
+    columnWidth: PropTypes.number.isRequired,
 };

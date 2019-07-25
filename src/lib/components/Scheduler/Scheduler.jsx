@@ -1,38 +1,19 @@
-import React, {useEffect, useRef} from 'react';
-import moment from 'moment';
+import React, {useRef, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {StateProvider} from './state/SchedulerState';
-import Items from './components/Items/Items';
-import Column from './components/Column/Column';
-import Header from './components/Header/Header';
-import Debug from './components/Debug/Debug';
+import moment from 'moment';
 import styles from './Scheduler.scss';
-
-import initialState from './state/initialState';
-import reducer from './state/reducer';
-import {uiActions} from './state/actions';
-
-import useStateValue from './hooks/useStateValue';
-import useColumns from './hooks/computed/useColumns';
-import useDaysInvisibleInEachSide from './hooks/computed/useDaysInvisibleInEachSide';
-
-import {notVisibleBufferWindowsEachSide} from './constants';
+import Debug from '../Debug/Debug';
+import Header from '../Header';
+import Column from '../Column';
+import Items from '../Items/Items';
+import {notVisibleBufferWindowsEachSide} from '../../constants';
 
 const Scheduler = (props) => {
     const {
-        visibleStartDate, visibleEndDate, rows, items, renderItem
+        visibleStartDate, visibleEndDate, rows, items, renderItem,
+        setSchedulerWidth, setInitialVisibleDates, setHiddenEndDate, setHiddenStartDate,
+        schedulerWidth, columns, daysInvisibleInEachSide
     } = props;
-
-    const {
-        setSchedulerWidth, setInitialVisibleDates, setHiddenEndDate, setHiddenStartDate
-    } = uiActions;
-
-    // state
-    const [{ ui: {schedulerWidth} }, dispatch] = useStateValue();
-
-    // computed values
-    const columns = useColumns();
-    const daysInvisibleInEachSide = useDaysInvisibleInEachSide();
 
     // refs
     const schedulerRef = useRef(null);
@@ -40,10 +21,10 @@ const Scheduler = (props) => {
     // component load or update
     useEffect(() => {
         // update schedulerWidth
-        dispatch(setSchedulerWidth(schedulerRef.current.getBoundingClientRect().width));
+        setSchedulerWidth(schedulerRef.current.getBoundingClientRect().width);
 
         // update visible date
-        dispatch(setInitialVisibleDates(visibleStartDate, visibleEndDate));
+        setInitialVisibleDates(visibleStartDate, visibleEndDate);
 
         setTimeout(() => {
             // set horizontal scroll bar in the middle
@@ -54,8 +35,8 @@ const Scheduler = (props) => {
     // on update
     useEffect(() => {
         // update hidden dates
-        dispatch(setHiddenStartDate(visibleStartDate.clone().add(-daysInvisibleInEachSide, 'days')));
-        dispatch(setHiddenEndDate(visibleEndDate.clone().add(daysInvisibleInEachSide, 'days')));
+        setHiddenStartDate(visibleStartDate.clone().add(-daysInvisibleInEachSide, 'days'));
+        setHiddenEndDate(visibleEndDate.clone().add(daysInvisibleInEachSide, 'days'));
     }, [daysInvisibleInEachSide]);
 
     return (
@@ -93,7 +74,14 @@ Scheduler.propTypes = {
         id: PropTypes.string
     })).isRequired,
     items: PropTypes.array.isRequired,
-    renderItem: PropTypes.func.isRequired
+    renderItem: PropTypes.func.isRequired,
+    setSchedulerWidth: PropTypes.func.isRequired,
+    setInitialVisibleDates: PropTypes.func.isRequired,
+    setHiddenStartDate: PropTypes.func.isRequired,
+    setHiddenEndDate: PropTypes.func.isRequired,
+    schedulerWidth: PropTypes.number.isRequired,
+    columns: PropTypes.array.isRequired,
+    daysInvisibleInEachSide: PropTypes.number.isRequired,
 };
 
-export default props => <StateProvider initialState={initialState} reducer={reducer}><Scheduler {...props} /></StateProvider>;
+export default Scheduler;

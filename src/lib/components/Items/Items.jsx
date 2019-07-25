@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import Item from '../Item/Item';
+import Item from '../Item';
 
 export default function Items(props) {
     const {

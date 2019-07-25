@@ -49,6 +49,7 @@
   "dependencies": {
     "classnames": "^2.2.6",
     "moment": "^2.24.0",
-    "prop-types": "latest"
+    "prop-types": "latest",
+    "reselect": "^4.0.0"
   }
 }
