@@ -2,21 +2,16 @@ import React, {useLayoutEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import styles from './HeaderItem.scss';
-import useColumnWidth from '../../hooks/computed/useColumnWidth';
-import useStateValue from '../../hooks/useStateValue';
-import {uiActions} from '../../state/actions';
 import {isChildVisibleHorizontallyInsideParent} from '../../utils/uiUtils';
 
 export default function HeaderItem(props) {
     const {
         schedulerRef,
-        column: {id, startDate}
+        column: {id, startDate},
+        setLeftVisibleDate,
+        columnWidth
     } = props;
 
-    const {setLeftVisibleDate} = uiActions;
-
-    const [state, dispatch] = useStateValue();
-    const columnWidth = useColumnWidth();
     const itemRef = useRef(null);
     const [visible, setVisible] = useState(false);
     const [x, setX] = useState(0);
@@ -48,5 +43,7 @@ export default function HeaderItem(props) {
 
 HeaderItem.propTypes = {
     schedulerRef: PropTypes.any.isRequired,
-    column: PropTypes.any.isRequired
+    column: PropTypes.any.isRequired,
+    setLeftVisibleDate: PropTypes.func.isRequired,
+    columnWidth: PropTypes.number.isRequired,
 };

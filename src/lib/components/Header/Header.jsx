@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './Header.scss';
+import HeaderItem from '../HeaderItem'
 
 export default function Header(props) {
     const {
@@ -9,7 +10,7 @@ export default function Header(props) {
 
     return (
         <div className={styles.header}>
-            { columns.map(column => <div key={Math.random()}>12</div>) }
+            { columns.map(column => <HeaderItem key={column.id} column={column} schedulerRef={schedulerRef} />) }
         </div>
     );
 }
