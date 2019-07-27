@@ -8,11 +8,13 @@ const mapStoreToProps = () => {
             setSchedulerWidth,
             setInitialVisibleDates,
             setHiddenStartDate,
-            setHiddenEndDate
+            setHiddenEndDate,
+            setScrollLeftPosition
         },
         computed: {
             columns,
-            daysInvisibleInEachSide
+            daysInvisibleInEachSide,
+            totalSchedulerWidth
         },
         state: {
             schedulerWidth
@@ -26,7 +28,9 @@ const mapStoreToProps = () => {
         setInitialVisibleDates,
         setHiddenStartDate,
         setHiddenEndDate,
-        daysInvisibleInEachSide
+        daysInvisibleInEachSide,
+        setScrollLeftPosition,
+        totalSchedulerWidth
     };
 };
 

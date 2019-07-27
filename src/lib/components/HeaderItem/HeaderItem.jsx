@@ -8,7 +8,6 @@ export default function HeaderItem(props) {
     const {
         schedulerRef,
         column: {id, startDate},
-        setLeftVisibleDate,
         columnWidth
     } = props;
 
@@ -44,6 +43,5 @@ export default function HeaderItem(props) {
 HeaderItem.propTypes = {
     schedulerRef: PropTypes.any.isRequired,
     column: PropTypes.any.isRequired,
-    setLeftVisibleDate: PropTypes.func.isRequired,
     columnWidth: PropTypes.number.isRequired,
 };

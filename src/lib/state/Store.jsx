@@ -7,7 +7,7 @@ const useStoreParts = (initialState, actions, computed) => {
     return useMemo(() => ({
         actions: actions({state, setState}),
         computed: Object.entries(computed).reduce((prev, [name, func]) => {
-            Object.defineProperty(prev, name, { get: () => func(state) });
+            Object.defineProperty(prev, name, { get: () => func(state), enumerable: true });
             return prev;
         }, {}),
         state

@@ -28,10 +28,18 @@ export default ({ state, setState }) => {
         }));
     };
 
+    const setScrollLeftPosition = (scrollLeftPosition) => {
+        setState(prevState => ({
+            ...prevState,
+            scrollLeftPosition
+        }));
+    };
+
     return {
         setSchedulerWidth,
         setInitialVisibleDates,
         setHiddenStartDate,
-        setHiddenEndDate
+        setHiddenEndDate,
+        setScrollLeftPosition
     };
 };

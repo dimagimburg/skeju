@@ -9,5 +9,6 @@ export default {
     hiddenStartDate: now,
     hiddenEndDate: now,
     leftVisibleDate: null,
-    rightVisibleDate: null
+    rightVisibleDate: null,
+    scrollLeftPosition: 0
 };
