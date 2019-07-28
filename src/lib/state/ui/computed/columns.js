@@ -1,7 +1,7 @@
 import {createSelector} from 'reselect';
+import getHiddenStartDate from './hiddenStartDate';
+import getHiddenEndDate from './hiddenEndDate';
 
-const getHiddenStartDate = state => state.hiddenStartDate;
-const getHiddenEndDate = state => state.hiddenEndDate;
 
 function getColumns(hiddenStartDate, hiddenEndDate) {
     const cols = [];

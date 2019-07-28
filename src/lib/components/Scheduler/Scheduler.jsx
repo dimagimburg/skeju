@@ -1,20 +1,24 @@
 import React, {useRef, useEffect, useLayoutEffect} from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import styles from './Scheduler.scss';
+import hooks from '../../hooks';
 import Debug from '../Debug';
 import Header from '../Header';
 import Column from '../Column';
 import Items from '../Items/Items';
 import {notVisibleBufferWindowsEachSide} from '../../constants';
+import styles from './Scheduler.scss';
 
 const Scheduler = (props) => {
     const {
         visibleStartDate, visibleEndDate, rows, items, renderItem,
-        setSchedulerWidth, setInitialVisibleDates, setHiddenEndDate, setHiddenStartDate,
-        schedulerWidth, columns, daysInvisibleInEachSide, setScrollLeftPosition,
-        totalSchedulerWidth
+        setSchedulerWidth, setVisibleDates,
+        schedulerWidth, columns, setScrollLeftPosition,
+        totalSchedulerWidth, scrollLeftPosition, extendSchedulerToRight, extendSchedulerToLeft,
+        setCanBeExtended, canBeExtended, extending
     } = props;
+
+    const {useDidUpdateEffect} = hooks;
 
     // refs
     const schedulerRef = useRef(null);
@@ -23,7 +27,6 @@ const Scheduler = (props) => {
     useLayoutEffect(() => {
         const scrollMoved = () => {
             const currentScrollLeftPosition = schedulerRef.current.scrollLeft;
-            console.log(totalSchedulerWidth);
             setScrollLeftPosition(currentScrollLeftPosition);
         };
 
@@ -38,22 +41,27 @@ const Scheduler = (props) => {
         setSchedulerWidth(schedulerRef.current.getBoundingClientRect().width);
 
         // update visible date
-        setInitialVisibleDates(visibleStartDate, visibleEndDate);
+        setVisibleDates(visibleStartDate, visibleEndDate);
 
         setTimeout(() => {
             // set horizontal scroll bar in the middle
             const initialScrollLeftPosition = schedulerWidth * notVisibleBufferWindowsEachSide;
             schedulerRef.current.scrollLeft = initialScrollLeftPosition;
             setScrollLeftPosition(initialScrollLeftPosition);
+            setCanBeExtended(true);
         }, 0);
     }, [schedulerWidth, visibleStartDate, visibleEndDate]);
 
-    // on update
-    useEffect(() => {
-        // update hidden dates
-        setHiddenStartDate(visibleStartDate.clone().add(-daysInvisibleInEachSide, 'days'));
-        setHiddenEndDate(visibleEndDate.clone().add(daysInvisibleInEachSide, 'days'));
-    }, [daysInvisibleInEachSide]);
+    // react on scroll move
+    useDidUpdateEffect(() => {
+        if (canBeExtended && !extending && scrollLeftPosition < schedulerWidth) {
+            extendSchedulerToLeft();
+        }
+
+        if (canBeExtended && !extending && scrollLeftPosition > totalSchedulerWidth - schedulerWidth * 2) {
+            extendSchedulerToRight();
+        }
+    }, [scrollLeftPosition, schedulerWidth, totalSchedulerWidth]);
 
     return (
         <div className={styles.wrapper}>
@@ -92,14 +100,17 @@ Scheduler.propTypes = {
     items: PropTypes.array.isRequired,
     renderItem: PropTypes.func.isRequired,
     setSchedulerWidth: PropTypes.func.isRequired,
-    setInitialVisibleDates: PropTypes.func.isRequired,
-    setHiddenStartDate: PropTypes.func.isRequired,
-    setHiddenEndDate: PropTypes.func.isRequired,
+    setVisibleDates: PropTypes.func.isRequired,
     setScrollLeftPosition: PropTypes.func.isRequired,
     schedulerWidth: PropTypes.number.isRequired,
     columns: PropTypes.array.isRequired,
-    daysInvisibleInEachSide: PropTypes.number.isRequired,
     totalSchedulerWidth: PropTypes.number.isRequired,
+    scrollLeftPosition: PropTypes.number.isRequired,
+    extendSchedulerToLeft: PropTypes.func.isRequired,
+    extendSchedulerToRight: PropTypes.func.isRequired,
+    setCanBeExtended: PropTypes.func.isRequired,
+    canBeExtended: PropTypes.bool.isRequired,
+    extending: PropTypes.bool.isRequired,
 };
 
 export default Scheduler;

@@ -4,11 +4,9 @@ const now = moment();
 
 export default {
     schedulerWidth: 0,
-    initialVisibleStartDate: now,
-    initialVisibleEndDate: now,
-    hiddenStartDate: now,
-    hiddenEndDate: now,
-    leftVisibleDate: null,
-    rightVisibleDate: null,
-    scrollLeftPosition: 0
+    visibleStartDate: now,
+    visibleEndDate: now,
+    scrollLeftPosition: 0,
+    canBeExtended: false,
+    extending: false
 };

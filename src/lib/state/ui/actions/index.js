@@ -6,25 +6,11 @@ export default ({ state, setState }) => {
         }));
     };
 
-    const setInitialVisibleDates = (initialVisibleStartDate, initialVisibleEndDate) => {
+    const setVisibleDates = (visibleStartDate, visibleEndDate) => {
         setState(prevState => ({
             ...prevState,
-            initialVisibleStartDate,
-            initialVisibleEndDate
-        }));
-    };
-
-    const setHiddenStartDate = (hiddenStartDate) => {
-        setState(prevState => ({
-            ...prevState,
-            hiddenStartDate
-        }));
-    };
-
-    const setHiddenEndDate = (hiddenEndDate) => {
-        setState(prevState => ({
-            ...prevState,
-            hiddenEndDate
+            visibleStartDate,
+            visibleEndDate
         }));
     };
 
@@ -35,11 +21,36 @@ export default ({ state, setState }) => {
         }));
     };
 
+    const setExtending = (extending) => {
+        setState(prevState => ({
+            ...prevState,
+            extending
+        }));
+    };
+
+    const extendSchedulerToRight = () => {
+        setExtending(true);
+        console.log('expanding to right');
+    };
+
+    const extendSchedulerToLeft = () => {
+        setExtending(true);
+        console.log('expanding to left');
+    };
+
+    const setCanBeExtended = (canBeExtended) => {
+        setState(prevState => ({
+            ...prevState,
+            canBeExtended
+        }));
+    };
+
     return {
         setSchedulerWidth,
-        setInitialVisibleDates,
-        setHiddenStartDate,
-        setHiddenEndDate,
-        setScrollLeftPosition
+        setVisibleDates,
+        setScrollLeftPosition,
+        extendSchedulerToRight,
+        extendSchedulerToLeft,
+        setCanBeExtended
     };
 };
