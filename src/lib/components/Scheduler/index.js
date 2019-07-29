@@ -15,7 +15,9 @@ const mapStoreToProps = () => {
         computed: {
             columns,
             daysInvisibleInEachSide,
-            totalSchedulerWidth
+            totalSchedulerWidth,
+            columnWidth,
+            daysVisible
         },
         state: {
             schedulerWidth,
@@ -38,7 +40,9 @@ const mapStoreToProps = () => {
         extendSchedulerToLeft,
         setCanBeExtended,
         canBeExtended,
-        extending
+        extending,
+        columnWidth,
+        daysVisible
     };
 };
 

@@ -1,4 +1,4 @@
-export default ({ state, setState }) => {
+export default ({ state, computed, setState }) => {
     const setSchedulerWidth = (schedulerWidth) => {
         setState(prevState => ({
             ...prevState,
@@ -28,14 +28,20 @@ export default ({ state, setState }) => {
         }));
     };
 
-    const extendSchedulerToRight = () => {
+    const extendSchedulerToRight = (scrollToCenterCallback) => {
+        const {daysVisible} = computed;
         setExtending(true);
-        console.log('expanding to right');
+        setVisibleDates(state.visibleStartDate.clone().add(daysVisible, 'days'), state.visibleEndDate.clone().add(daysVisible, 'days'));
+        scrollToCenterCallback();
+        setExtending(false);
     };
 
-    const extendSchedulerToLeft = () => {
+    const extendSchedulerToLeft = (scrollToCenterCallback) => {
+        const {daysVisible} = computed;
         setExtending(true);
-        console.log('expanding to left');
+        setVisibleDates(state.visibleStartDate.clone().add(-daysVisible, 'days'), state.visibleEndDate.clone().add(-daysVisible, 'days'));
+        scrollToCenterCallback();
+        setExtending(false);
     };
 
     const setCanBeExtended = (canBeExtended) => {

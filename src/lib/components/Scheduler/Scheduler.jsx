@@ -1,7 +1,7 @@
-import React, {useRef, useEffect, useLayoutEffect} from 'react';
+import React, {useRef, useLayoutEffect} from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import hooks from '../../hooks';
+import {useDidUpdateEffect} from '../../hooks';
 import Debug from '../Debug';
 import Header from '../Header';
 import Column from '../Column';
@@ -11,14 +11,10 @@ import styles from './Scheduler.scss';
 
 const Scheduler = (props) => {
     const {
-        visibleStartDate, visibleEndDate, rows, items, renderItem,
-        setSchedulerWidth, setVisibleDates,
-        schedulerWidth, columns, setScrollLeftPosition,
-        totalSchedulerWidth, scrollLeftPosition, extendSchedulerToRight, extendSchedulerToLeft,
-        setCanBeExtended, canBeExtended, extending
+        visibleStartDate, visibleEndDate, rows, items, renderItem, setSchedulerWidth, setVisibleDates, daysVisible,
+        schedulerWidth, columns, setScrollLeftPosition, totalSchedulerWidth, scrollLeftPosition, columnWidth,
+        extendSchedulerToRight, extendSchedulerToLeft, setCanBeExtended, canBeExtended, extending
     } = props;
-
-    const {useDidUpdateEffect} = hooks;
 
     // refs
     const schedulerRef = useRef(null);
@@ -55,11 +51,15 @@ const Scheduler = (props) => {
     // react on scroll move
     useDidUpdateEffect(() => {
         if (canBeExtended && !extending && scrollLeftPosition < schedulerWidth) {
-            extendSchedulerToLeft();
+            extendSchedulerToLeft(() => {
+                schedulerRef.current.scrollLeft += daysVisible * columnWidth;
+            });
         }
 
         if (canBeExtended && !extending && scrollLeftPosition > totalSchedulerWidth - schedulerWidth * 2) {
-            extendSchedulerToRight();
+            extendSchedulerToRight(() => {
+                schedulerRef.current.scrollLeft -= daysVisible * columnWidth;
+            });
         }
     }, [scrollLeftPosition, schedulerWidth, totalSchedulerWidth]);
 
@@ -111,6 +111,8 @@ Scheduler.propTypes = {
     setCanBeExtended: PropTypes.func.isRequired,
     canBeExtended: PropTypes.bool.isRequired,
     extending: PropTypes.bool.isRequired,
+    columnWidth: PropTypes.number.isRequired,
+    daysVisible: PropTypes.number.isRequired,
 };
 
 export default Scheduler;

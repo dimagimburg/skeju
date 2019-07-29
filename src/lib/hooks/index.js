@@ -1,5 +1,3 @@
-import useDidUpdateEffect from './useDidUpdateEffect';
+import _useDidUpdateEffect from './useDidUpdateEffect';
 
-export default {
-    useDidUpdateEffect
-};
+export const useDidUpdateEffect = _useDidUpdateEffect;
