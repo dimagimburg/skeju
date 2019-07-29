@@ -4,15 +4,14 @@ import moment from 'moment';
 import {useDidUpdateEffect} from '../../hooks';
 import Debug from '../Debug';
 import Header from '../Header';
-import Column from '../Column';
-import Items from '../Items/Items';
 import {notVisibleBufferWindowsEachSide} from '../../constants';
+import Rows from '../Rows';
 import styles from './Scheduler.scss';
 
 const Scheduler = (props) => {
     const {
         visibleStartDate, visibleEndDate, rows, items, renderItem, setSchedulerWidth, setVisibleDates, daysVisible,
-        schedulerWidth, columns, setScrollLeftPosition, totalSchedulerWidth, scrollLeftPosition, columnWidth,
+        schedulerWidth, setScrollLeftPosition, totalSchedulerWidth, scrollLeftPosition, columnWidth,
         extendSchedulerToRight, extendSchedulerToLeft, setCanBeExtended, canBeExtended, extending
     } = props;
 
@@ -67,24 +66,9 @@ const Scheduler = (props) => {
         <div className={styles.wrapper}>
             <Debug />
             <div className={styles.scheduler} ref={schedulerRef}>
-                <div className={styles.rows}>
+                <div className={styles.contentWrapper}>
                     <Header schedulerRef={schedulerRef} />
-                    {rows.map(r => (
-                        <div key={r.id} className={styles.row}>
-                            {
-                                columns.map(column => (
-                                    <Column key={column.id}>
-                                        <Items
-                                            row={r}
-                                            items={items}
-                                            renderItem={renderItem}
-                                            column={column}
-                                        />
-                                    </Column>
-                                ))
-                            }
-                        </div>
-                    ))}
+                    <Rows rows={rows} items={items} renderItem={renderItem} />
                 </div>
             </div>
         </div>
@@ -103,7 +87,6 @@ Scheduler.propTypes = {
     setVisibleDates: PropTypes.func.isRequired,
     setScrollLeftPosition: PropTypes.func.isRequired,
     schedulerWidth: PropTypes.number.isRequired,
-    columns: PropTypes.array.isRequired,
     totalSchedulerWidth: PropTypes.number.isRequired,
     scrollLeftPosition: PropTypes.number.isRequired,
     extendSchedulerToLeft: PropTypes.func.isRequired,
