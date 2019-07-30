@@ -28,7 +28,7 @@ const Scheduler = (props) => {
 
         schedulerRef.current.addEventListener('scroll', scrollMoved);
 
-        return () => { schedulerRef.current.removeEventListener('scroll', scrollMoved);  };
+        return () => { schedulerRef.current.removeEventListener('scroll', scrollMoved); };
     }, [totalSchedulerWidth]);
 
     // component load or updated visibleStartDate, visibleEndDate or schedulerWidth (e.g resize)
