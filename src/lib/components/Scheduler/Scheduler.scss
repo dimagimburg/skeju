@@ -13,6 +13,10 @@
     position: relative;
 }
 
+.scheduler::-webkit-scrollbar {
+    width: 0 !important
+}
+
 .contentWrapper{
     width: 100%;
 }
