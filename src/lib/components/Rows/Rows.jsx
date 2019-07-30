@@ -1,28 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styles from './Rows.scss';
+import React, {useContext} from 'react';
+import {OuterPropsContext} from '../../state/OuterPropsContext';
 import Columns from '../Columns';
+import styles from './Rows.scss';
 
-export default function Rows(props) {
-    const {
-        rows, items, renderItem
-    } = props;
-
+export default function Rows() {
+    const {rows} = useContext(OuterPropsContext);
     return (
         <>
-            {rows.map(r => (
-                <div key={r.id} className={styles.row}>
-                    <Columns items={items} renderItem={renderItem} row={r} />
+            {rows.map(row => (
+                <div key={row.id} className={styles.row}>
+                    <Columns row={row} />
                 </div>
             ))}
         </>
     );
 }
-
-Rows.propTypes = {
-    rows: PropTypes.arrayOf(PropTypes.exact({
-        id: PropTypes.string
-    })).isRequired,
-    items: PropTypes.array.isRequired,
-    renderItem: PropTypes.func.isRequired
-};

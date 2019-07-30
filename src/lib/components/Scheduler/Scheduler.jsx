@@ -1,7 +1,7 @@
-import React, {useRef, useLayoutEffect} from 'react';
+import React, {useRef, useLayoutEffect, useContext} from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import {useDidUpdateEffect} from '../../hooks';
+import {OuterPropsContext} from '../../state/OuterPropsContext';
 import Debug from '../Debug';
 import Header from '../Header';
 import {notVisibleBufferWindowsEachSide} from '../../constants';
@@ -10,13 +10,14 @@ import styles from './Scheduler.scss';
 
 const Scheduler = (props) => {
     const {
-        visibleStartDate, visibleEndDate, rows, items, renderItem, setSchedulerWidth, setVisibleDates, daysVisible,
-        schedulerWidth, setScrollLeftPosition, totalSchedulerWidth, scrollLeftPosition, columnWidth,
-        extendSchedulerToRight, extendSchedulerToLeft, setCanBeExtended, canBeExtended, extending
+        setSchedulerWidth, setVisibleDates, daysVisible, schedulerWidth, setScrollLeftPosition, totalSchedulerWidth,
+        scrollLeftPosition, columnWidth, extendSchedulerToRight, extendSchedulerToLeft, setCanBeExtended,
+        canBeExtended, extending
     } = props;
 
     // refs
     const schedulerRef = useRef(null);
+    const {visibleStartDate, visibleEndDate} = useContext(OuterPropsContext);
 
     // component load
     useLayoutEffect(() => {
@@ -68,7 +69,7 @@ const Scheduler = (props) => {
             <div className={styles.scheduler} ref={schedulerRef}>
                 <div className={styles.contentWrapper}>
                     <Header schedulerRef={schedulerRef} />
-                    <Rows rows={rows} items={items} renderItem={renderItem} />
+                    <Rows />
                 </div>
             </div>
         </div>
@@ -76,13 +77,6 @@ const Scheduler = (props) => {
 };
 
 Scheduler.propTypes = {
-    visibleStartDate: PropTypes.instanceOf(moment).isRequired,
-    visibleEndDate: PropTypes.instanceOf(moment).isRequired,
-    rows: PropTypes.arrayOf(PropTypes.exact({
-        id: PropTypes.string
-    })).isRequired,
-    items: PropTypes.array.isRequired,
-    renderItem: PropTypes.func.isRequired,
     setSchedulerWidth: PropTypes.func.isRequired,
     setVisibleDates: PropTypes.func.isRequired,
     setScrollLeftPosition: PropTypes.func.isRequired,

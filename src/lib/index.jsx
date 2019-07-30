@@ -1,5 +1,11 @@
 import React from 'react';
-import {SchedulerStoreProvider} from './state';
+import {SchedulerStoreProvider, OuterPropsProvider} from './state';
 import Scheduler from './components/Scheduler';
 
-export default props => <SchedulerStoreProvider><Scheduler {...props} /></SchedulerStoreProvider>;
+export default props => (
+    <SchedulerStoreProvider>
+        <OuterPropsProvider value={props}>
+            <Scheduler {...props} />
+        </OuterPropsProvider>
+    </SchedulerStoreProvider>
+);

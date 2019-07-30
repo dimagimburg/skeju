@@ -1,8 +1,9 @@
 import {Store} from './Store';
+import {OuterPropsProvider} from './OuterPropsContext';
 import ui from './ui';
 
 const [SchedulerStoreProvider, useStore] = Store(
     ui
 );
 
-export {SchedulerStoreProvider, useStore};
+export {OuterPropsProvider, SchedulerStoreProvider, useStore};
