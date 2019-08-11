@@ -1,16 +1,14 @@
-let _state;
-let _computed;
-let _setState;
+import {state, computed, setState} from '../../Store';
 
 const setSchedulerWidth = (schedulerWidth) => {
-    _setState(prevState => ({
+    setState(prevState => ({
         ...prevState,
         schedulerWidth
     }));
 };
 
 const setVisibleDates = (visibleStartDate, visibleEndDate) => {
-    _setState(prevState => ({
+    setState(prevState => ({
         ...prevState,
         visibleStartDate,
         visibleEndDate
@@ -18,37 +16,37 @@ const setVisibleDates = (visibleStartDate, visibleEndDate) => {
 };
 
 const setScrollLeftPosition = (scrollLeftPosition) => {
-    _setState(prevState => ({
+    setState(prevState => ({
         ...prevState,
         scrollLeftPosition
     }));
 };
 
 const setExtending = (extending) => {
-    _setState(prevState => ({
+    setState(prevState => ({
         ...prevState,
         extending
     }));
 };
 
 const extendSchedulerToRight = (scrollToCenterCallback) => {
-    const {daysVisible} = _computed;
+    const {daysVisible} = computed;
     setExtending(true);
-    setVisibleDates(_state.visibleStartDate.clone().add(daysVisible, 'days'), _state.visibleEndDate.clone().add(daysVisible, 'days'));
+    setVisibleDates(state.visibleStartDate.clone().add(daysVisible, 'days'), state.visibleEndDate.clone().add(daysVisible, 'days'));
     scrollToCenterCallback();
     setExtending(false);
 };
 
 const extendSchedulerToLeft = (scrollToCenterCallback) => {
-    const {daysVisible} = _computed;
+    const {daysVisible} = computed;
     setExtending(true);
-    setVisibleDates(_state.visibleStartDate.clone().add(-daysVisible, 'days'), _state.visibleEndDate.clone().add(-daysVisible, 'days'));
+    setVisibleDates(state.visibleStartDate.clone().add(-daysVisible, 'days'), state.visibleEndDate.clone().add(-daysVisible, 'days'));
     scrollToCenterCallback();
     setExtending(false);
 };
 
 const setCanBeExtended = (canBeExtended) => {
-    _setState(prevState => ({
+    setState(prevState => ({
         ...prevState,
         canBeExtended
     }));
@@ -64,9 +62,4 @@ const actions = {
     setSchedulerWidth
 };
 
-export default ({ state, computed, setState }) => {
-    _state = state;
-    _computed = computed;
-    _setState = setState;
-    return actions;
-};
+export default () => actions;
