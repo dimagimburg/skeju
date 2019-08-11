@@ -1,6 +1,6 @@
 import React, {useRef, useLayoutEffect, useContext} from 'react';
 import PropTypes from 'prop-types';
-import {useDidUpdateEffect} from '../../hooks';
+import {useDidUpdateEffect, useTraceUpdate} from '../../hooks';
 import {OuterPropsContext} from '../../state/OuterPropsContext';
 import Debug from '../Debug';
 import Header from '../Header';
@@ -8,12 +8,15 @@ import {notVisibleBufferWindowsEachSide} from '../../constants';
 import Rows from '../Rows';
 import styles from './Scheduler.scss';
 
+
 const Scheduler = (props) => {
     const {
         setSchedulerWidth, setVisibleDates, daysVisible, schedulerWidth, setScrollLeftPosition, totalSchedulerWidth,
         scrollLeftPosition, columnWidth, extendSchedulerToRight, extendSchedulerToLeft, setCanBeExtended,
         canBeExtended, extending
     } = props;
+
+    useTraceUpdate(props);
 
     // refs
     const schedulerRef = useRef(null);
@@ -62,6 +65,8 @@ const Scheduler = (props) => {
             });
         }
     }, [scrollLeftPosition, schedulerWidth, totalSchedulerWidth]);
+
+    console.log('render schduler');
 
     return (
         <div className={styles.wrapper}>

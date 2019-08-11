@@ -37,7 +37,9 @@
     "react/forbid-prop-types": 0,
     "react/jsx-indent-props": [2, 4],
     "no-unused-vars": 0,
-    "object-curly-newline": 0
+    "object-curly-newline": 0,
+    "no-param-reassign": 0,
+    "no-underscore-dangle": 0
   },
   "parser": "babel-eslint"
 }

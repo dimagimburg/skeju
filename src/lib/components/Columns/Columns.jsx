@@ -1,12 +1,10 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import {OuterPropsContext} from '../../state/OuterPropsContext';
 import Column from '../Column';
 import Items from '../Items/Items';
 
-export default function Rows(props) {
+export default function Columns(props) {
     const {columns, row} = props;
-    const {items, renderItem} = useContext(OuterPropsContext);
 
     return (
         <>
@@ -14,8 +12,6 @@ export default function Rows(props) {
                 <Column key={column.id}>
                     <Items
                         row={row}
-                        items={items}
-                        renderItem={renderItem}
                         column={column}
                     />
                 </Column>
@@ -24,7 +20,7 @@ export default function Rows(props) {
     );
 }
 
-Rows.propTypes = {
+Columns.propTypes = {
     row: PropTypes.object.isRequired,
     columns: PropTypes.array.isRequired
 };

@@ -11,7 +11,7 @@ const useStoreParts = (initialState, actions, computed) => {
         }, {});
 
         return {
-            actions: actions({state, computed: computedEvaluated, setState}),
+            actions: () => actions({state, computed: computedEvaluated, setState}),
             computed: computedEvaluated,
             state
         };

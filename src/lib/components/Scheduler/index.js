@@ -4,16 +4,8 @@ import Scheduler from './Scheduler';
 
 const mapStoreToProps = () => {
     const {
-        actions: {
-            setSchedulerWidth,
-            setVisibleDates,
-            setScrollLeftPosition,
-            extendSchedulerToRight,
-            extendSchedulerToLeft,
-            setCanBeExtended
-        },
+        actions,
         computed: {
-            daysInvisibleInEachSide,
             totalSchedulerWidth,
             columnWidth,
             daysVisible
@@ -26,11 +18,15 @@ const mapStoreToProps = () => {
         }
     } = useStore();
 
+    const {
+        setSchedulerWidth, setVisibleDates, setScrollLeftPosition, extendSchedulerToRight, extendSchedulerToLeft,
+        setCanBeExtended
+    } = actions();
+
     return {
         setSchedulerWidth,
         schedulerWidth,
         setVisibleDates,
-        daysInvisibleInEachSide,
         setScrollLeftPosition,
         totalSchedulerWidth,
         scrollLeftPosition,

@@ -1,32 +1,25 @@
-import React from 'react';
+import React, {useContext, useMemo} from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import Item from '../Item';
+import {OuterPropsContext} from '../../state/OuterPropsContext';
 
 export default function Items(props) {
     const {
-        items, renderItem, row, column
+        row, column
     } = props;
 
-    return (
-        <div>
-            {
-                items
-                    .filter(item => item.row === row.id && item.startTime.isBetween(column.startDate, column.endDate))
-                    .map(item => <Item key={item.id} item={item} renderItem={renderItem} />)
-            }
-        </div>
-    );
+    const {items, renderItem} = useContext(OuterPropsContext);
+
+    const itemsFilteredAndRendered = useMemo(() => (
+        items
+            .filter(item => item.row === row.id && item.startTime.isBetween(column.startDate, column.endDate))
+            .map(item => <Item key={item.id} item={item} renderItem={renderItem} />)
+    ), [items]);
+
+    return <>{itemsFilteredAndRendered}</>;
 }
 
 Items.propTypes = {
     row: PropTypes.any.isRequired,
-    column: PropTypes.any.isRequired,
-    renderItem: PropTypes.func.isRequired,
-    items: PropTypes.arrayOf(PropTypes.exact({
-        id: PropTypes.string.isRequired,
-        row: PropTypes.string.isRequired,
-        startTime: PropTypes.instanceOf(moment).isRequired,
-        endTime: PropTypes.instanceOf(moment).isRequired
-    })).isRequired
+    column: PropTypes.any.isRequired
 };

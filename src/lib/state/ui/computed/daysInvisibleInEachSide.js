@@ -6,6 +6,7 @@ const getVisibleStartDate = state => state.visibleStartDate;
 const getVisibleEndDate = state => state.visibleEndDate;
 
 function getDaysInvisibleInEachSide(initialVisibleStartDate, initialVisibleEndDate) {
+    console.log('getDaysInvisibleInEachSide');
     return diffInDays(initialVisibleStartDate, initialVisibleEndDate) * notVisibleBufferWindowsEachSide;
 }
 
