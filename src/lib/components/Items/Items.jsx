@@ -13,7 +13,7 @@ export default function Items(props) {
     const itemsFilteredAndRendered = useMemo(() => (
         items
             .filter(item => item.row === row.id && item.startTime.isBetween(column.startDate, column.endDate))
-            .map(item => <Item key={item.id} item={item} renderItem={renderItem} />)
+            .map(item => <Item key={item.id} item={item} renderItem={renderItem} columnStartDate={column.startDate} />)
     ), [items]);
 
     return <>{itemsFilteredAndRendered}</>;

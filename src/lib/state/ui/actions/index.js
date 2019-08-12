@@ -56,7 +56,6 @@ const actions = {
     setCanBeExtended,
     extendSchedulerToLeft,
     extendSchedulerToRight,
-    setExtending,
     setScrollLeftPosition,
     setVisibleDates,
     setSchedulerWidth

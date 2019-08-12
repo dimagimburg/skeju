@@ -5,12 +5,16 @@ import Item from './Item';
 const mapStoreToProps = () => {
     const {
         computed: {
-            columnWidth
+            columnWidth,
+            hiddenStartDate,
+            hiddenEndDate
         }
     } = useStore();
 
     return {
-        columnWidth
+        columnWidth,
+        hiddenStartDate,
+        hiddenEndDate
     };
 };
 
