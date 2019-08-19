@@ -10,11 +10,14 @@ export default function Items(props) {
 
     const {items, renderItem} = useContext(OuterPropsContext);
 
-    const itemsFilteredAndRendered = useMemo(() => (
-        items
-            .filter(item => item.row === row.id && item.startTime.isBetween(column.startDate, column.endDate))
-            .map(item => <Item key={item.id} item={item} renderItem={renderItem} columnStartDate={column.startDate} />)
-    ), [items]);
+    const itemsFilteredAndRendered = useMemo(() => {
+        const itemsToDraw = items.filter((item) => {
+            const startTimeIsInColumn = item.startTime.isBetween(column.startDate, column.endDate, null, '[)');
+            const endTimeIsInColumn = item.endTime.isBetween(column.startDate, column.endDate, null, '[)');
+            return item.row === row.id && (startTimeIsInColumn || endTimeIsInColumn);
+        });
+        return itemsToDraw.map(item => <Item key={item.id} item={item} renderItem={renderItem} columnStartDate={column.startDate} />);
+    }, [items]);
 
     return <>{itemsFilteredAndRendered}</>;
 }

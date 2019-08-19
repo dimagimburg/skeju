@@ -66,8 +66,6 @@ const Scheduler = (props) => {
         }
     }, [scrollLeftPosition, schedulerWidth, totalSchedulerWidth]);
 
-    console.log('render schduler');
-
     return (
         <div className={styles.wrapper}>
             <Debug />

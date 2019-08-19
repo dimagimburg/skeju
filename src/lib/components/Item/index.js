@@ -4,6 +4,9 @@ import Item from './Item';
 
 const mapStoreToProps = () => {
     const {
+        state: {
+            visibleStartDate
+        },
         computed: {
             columnWidth,
             hiddenStartDate,
@@ -14,7 +17,8 @@ const mapStoreToProps = () => {
     return {
         columnWidth,
         hiddenStartDate,
-        hiddenEndDate
+        hiddenEndDate,
+        visibleStartDate
     };
 };
 

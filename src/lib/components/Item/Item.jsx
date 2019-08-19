@@ -7,21 +7,24 @@ import styles from './Item.scss';
 const dayInSeconds = 24 * 60 * 60;
 
 export default function Item(props) {
-    console.log('render item');
     const {
-        item, renderItem, columnWidth, hiddenStartDate, hiddenEndDate, columnStartDate
+        item, renderItem, columnWidth, hiddenStartDate, hiddenEndDate, columnStartDate, visibleStartDate
     } = props;
 
+    // todo: move right/left calculations into a condition, no need to always calculate right offset if not needed.
+
     const draw = item.startTime.isBetween(hiddenStartDate, hiddenEndDate) || item.endTime.isBetween(hiddenStartDate, hiddenEndDate);
+    const drawFromRight = draw && !item.startTime.isBetween(hiddenStartDate, hiddenEndDate);
     const lengthInDays = item.endTime.diff(item.startTime, 'days', true);
     const width = (lengthInDays * columnWidth).toFixed(3);
     const leftOffset = columnWidth * (Math.abs(moment.duration(columnStartDate.diff(item.startTime)).asSeconds()) / dayInSeconds);
+    const rightOffset = (lengthInDays * columnWidth) - (columnWidth * (moment.duration(item.endTime.diff(columnStartDate)).asSeconds() / dayInSeconds));
 
-    return draw && (
-        <div className={cx(styles.itemWrapper)} style={{width, left: leftOffset}}>
-            {renderItem({width, id: item.id})}
-        </div>
-    );
+    const leftOrRightStyle = {
+        [drawFromRight ? 'right' : 'left']: [drawFromRight ? rightOffset : leftOffset]
+    };
+
+    return <div className={cx(styles.itemWrapper)} style={{width, ...leftOrRightStyle}}>{renderItem({width, id: item.id})}</div>;
 }
 
 Item.propTypes = {
@@ -36,4 +39,5 @@ Item.propTypes = {
     hiddenStartDate: PropTypes.instanceOf(moment).isRequired,
     hiddenEndDate: PropTypes.instanceOf(moment).isRequired,
     columnStartDate: PropTypes.instanceOf(moment).isRequired,
+    visibleStartDate: PropTypes.instanceOf(moment).isRequired,
 };

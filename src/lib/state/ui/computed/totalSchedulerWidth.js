@@ -4,7 +4,6 @@ import getDaysInvisibleInEachSide from './daysInvisibleInEachSide';
 import getColumnWidth from './columnWidth';
 
 function getTotalSchedulerWidth(columnWidth, daysInvisibleInEachSide, daysVisible) {
-    console.log('getTotalSchedulerWidth');
     return columnWidth * (daysVisible + daysInvisibleInEachSide * 2);
 }
 

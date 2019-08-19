@@ -4,7 +4,6 @@ import getDaysInvisibleInEachSide from './daysInvisibleInEachSide';
 const getVisibleEndDate = state => state.visibleEndDate;
 
 function getHiddenEndDate(visibleEndDate, daysInvisibleInEachSide) {
-    console.log('getHiddenEndDate');
     return visibleEndDate.clone().add(daysInvisibleInEachSide, 'days');
 }
 

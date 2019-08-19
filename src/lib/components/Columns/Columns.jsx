@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Column from '../Column';
-import Items from '../Items/Items';
+import Items from '../Items';
 
 export default function Columns(props) {
     const {columns, row} = props;

@@ -5,7 +5,6 @@ const getVisibleStartDate = state => state.visibleStartDate;
 const getVisibleEndDate = state => state.visibleEndDate;
 
 function getDaysVisible(initialVisibleStartDate, initialVisibleEndDate) {
-    console.log('getDaysVisible');
     return diffInDays(initialVisibleStartDate, initialVisibleEndDate);
 }
 
