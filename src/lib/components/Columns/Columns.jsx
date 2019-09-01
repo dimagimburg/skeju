@@ -4,23 +4,28 @@ import Column from '../Column';
 import Items from '../Items';
 
 export default function Columns(props) {
-    const {columns, row} = props;
-
+    const { columns, row, normalizedItems } = props;
     return (
         <>
-            {columns.map(column => (
-                <Column key={column.id}>
-                    <Items
-                        row={row}
-                        column={column}
-                    />
-                </Column>
-            ))}
+            {
+                columns.map((column) => {
+                    // either item's start time or end time included in this day
+                    // note: not all item are being drawn, only the ones with sufficient
+                    // (start or end time is between hidden start date and hidden end date)
+                    const hasItemsToDraw = normalizedItems[row.id][column.id];
+                    return (
+                        <Column key={column.id}>
+                            { hasItemsToDraw && <Items row={row} column={column} /> }
+                        </Column>
+                    );
+                })
+            }
         </>
     );
 }
 
 Columns.propTypes = {
     row: PropTypes.object.isRequired,
-    columns: PropTypes.array.isRequired
+    columns: PropTypes.array.isRequired,
+    normalizedItems: PropTypes.object.isRequired
 };

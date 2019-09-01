@@ -20,7 +20,7 @@ const mapStoreToProps = () => {
 
     const {
         setSchedulerWidth, setVisibleDates, setScrollLeftPosition, extendSchedulerToRight, extendSchedulerToLeft,
-        setCanBeExtended
+        setCanBeExtended, setItems
     } = actions();
 
     return {
@@ -36,7 +36,8 @@ const mapStoreToProps = () => {
         canBeExtended,
         extending,
         columnWidth,
-        daysVisible
+        daysVisible,
+        setItems
     };
 };
 

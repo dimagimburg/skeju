@@ -6,12 +6,18 @@ import Item from './Item';
 
 const App = () => {
     const items = [
-        // {
-        //     id: '111',
-        //     row: 'shmulik',
-        //     startTime: moment().add(12, 'hours'),
-        //     endTime: moment().add(2, 'seconds').add(2, 'days').add(24, 'hours')
-        // },
+        {
+            id: '111',
+            row: 'shmulik',
+            startTime: moment().add(12, 'hours'),
+            endTime: moment().add(2, 'seconds').add(2, 'days').add(24, 'hours')
+        },
+        {
+            id: '123123',
+            row: 'shmulik',
+            startTime: moment().add(10, 'hours'),
+            endTime: moment().add(20, 'seconds').add(2, 'days').add(24, 'hours')
+        },
         // {
         //     id: '222',
         //     row: 'eliko',
@@ -27,8 +33,8 @@ const App = () => {
         {
             id: '444',
             row: 'eliko',
-            startTime: moment().add(-100, 'days').add(3, 'hours'),
-            endTime: moment().add(1, 'days').startOf('day').add(20, 'hours')
+            startTime: moment().add(-100, 'days').startOf('day').add(12, 'hours'),
+            endTime: moment().add(1, 'days').startOf('day').add(3, 'hours')
         },
         // {
         //     id: '444',
@@ -53,7 +59,7 @@ const App = () => {
         <div style={{'width': '1000px'}}>
             <Scheduler
                 visibleStartDate={moment()}
-                visibleEndDate={moment().add(22, 'days')}
+                visibleEndDate={moment().add(7, 'days')}
                 items={items}
                 rows={rows}
                 renderItem={(props) => <Item {...props} />}

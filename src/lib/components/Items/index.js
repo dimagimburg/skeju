@@ -8,13 +8,15 @@ const mapStoreToProps = () => {
             scrollLeftPosition
         },
         computed: {
-            columnWidth
+            columnWidth,
+            normalizedItems
         }
     } = useStore();
 
     return {
         columnWidth,
-        scrollLeftPosition
+        scrollLeftPosition,
+        normalizedItems
     };
 };
 

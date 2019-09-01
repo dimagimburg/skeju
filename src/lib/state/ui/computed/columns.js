@@ -1,6 +1,7 @@
 import {createSelector} from 'reselect';
 import getHiddenStartDate from './hiddenStartDate';
 import getHiddenEndDate from './hiddenEndDate';
+import {formatMoment} from '../../../utils/timeUtils';
 
 
 function getColumns(hiddenStartDate, hiddenEndDate) {
@@ -10,7 +11,7 @@ function getColumns(hiddenStartDate, hiddenEndDate) {
     // the left, and one more window to the right.
     for (let i = hiddenStartDate; i < hiddenEndDate; i = i.clone().add(1, 'days')) {
         cols.push({
-            id: i.format('DD/MM'),
+            id: formatMoment(i),
             startDate: i.clone().startOf('day'),
             endDate: i.clone().add(1, 'days').startOf('day')
         });

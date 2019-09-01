@@ -5,8 +5,10 @@ import columnWidth from './columnWidth';
 import totalSchedulerWidth from './totalSchedulerWidth';
 import hiddenStartDate from './hiddenStartDate';
 import hiddenEndDate from './hiddenEndDate';
+import normalizedItems from './normalizedItems';
 
 export default {
+    normalizedItems,
     columns,
     daysInvisibleInEachSide,
     daysVisible,

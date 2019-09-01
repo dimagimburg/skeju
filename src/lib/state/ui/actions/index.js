@@ -52,13 +52,21 @@ const setCanBeExtended = (canBeExtended) => {
     }));
 };
 
+const setItems = (items) => {
+    setState(prevState => ({
+        ...prevState,
+        items
+    }));
+};
+
 const actions = {
     setCanBeExtended,
     extendSchedulerToLeft,
     extendSchedulerToRight,
     setScrollLeftPosition,
     setVisibleDates,
-    setSchedulerWidth
+    setSchedulerWidth,
+    setItems
 };
 
 export default () => actions;

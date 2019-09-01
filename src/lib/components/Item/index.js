@@ -8,16 +8,12 @@ const mapStoreToProps = () => {
             visibleStartDate
         },
         computed: {
-            columnWidth,
-            hiddenStartDate,
-            hiddenEndDate
+            columnWidth
         }
     } = useStore();
 
     return {
         columnWidth,
-        hiddenStartDate,
-        hiddenEndDate,
         visibleStartDate
     };
 };

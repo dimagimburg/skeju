@@ -1,7 +1,6 @@
-import React, {useRef, useLayoutEffect, useContext} from 'react';
+import React, {useRef, useLayoutEffect, useContext, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {useDidUpdateEffect, useTraceUpdate} from '../../hooks';
-import {OuterPropsContext} from '../../state/OuterPropsContext';
 import Debug from '../Debug';
 import Header from '../Header';
 import {notVisibleBufferWindowsEachSide} from '../../constants';
@@ -13,16 +12,18 @@ const Scheduler = (props) => {
     const {
         setSchedulerWidth, setVisibleDates, daysVisible, schedulerWidth, setScrollLeftPosition, totalSchedulerWidth,
         scrollLeftPosition, columnWidth, extendSchedulerToRight, extendSchedulerToLeft, setCanBeExtended,
-        canBeExtended, extending
+        canBeExtended, extending, setItems, visibleStartDate, visibleEndDate, items
     } = props;
 
     useTraceUpdate(props);
 
     // refs
     const schedulerRef = useRef(null);
-    const {visibleStartDate, visibleEndDate} = useContext(OuterPropsContext);
 
-    // component load
+    // component loaded and not yet drawn
+    useEffect(() => { setItems(items); }, [items]);
+
+    // component load and drawn
     useLayoutEffect(() => {
         const scrollMoved = () => {
             const currentScrollLeftPosition = schedulerRef.current.scrollLeft;
@@ -54,15 +55,11 @@ const Scheduler = (props) => {
     // react on scroll move
     useDidUpdateEffect(() => {
         if (canBeExtended && !extending && scrollLeftPosition < schedulerWidth) {
-            extendSchedulerToLeft(() => {
-                schedulerRef.current.scrollLeft += daysVisible * columnWidth;
-            });
+            extendSchedulerToLeft(() => { schedulerRef.current.scrollLeft += daysVisible * columnWidth; });
         }
 
         if (canBeExtended && !extending && scrollLeftPosition > totalSchedulerWidth - schedulerWidth * 2) {
-            extendSchedulerToRight(() => {
-                schedulerRef.current.scrollLeft -= daysVisible * columnWidth;
-            });
+            extendSchedulerToRight(() => { schedulerRef.current.scrollLeft -= daysVisible * columnWidth; });
         }
     }, [scrollLeftPosition, schedulerWidth, totalSchedulerWidth]);
 
@@ -93,6 +90,10 @@ Scheduler.propTypes = {
     extending: PropTypes.bool.isRequired,
     columnWidth: PropTypes.number.isRequired,
     daysVisible: PropTypes.number.isRequired,
+    setItems: PropTypes.func.isRequired,
+    items: PropTypes.array.isRequired,
+    visibleStartDate: PropTypes.any.isRequired,
+    visibleEndDate: PropTypes.any.isRequired,
 };
 
 export default Scheduler;

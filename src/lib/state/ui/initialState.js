@@ -8,5 +8,6 @@ export default {
     visibleEndDate: now,
     scrollLeftPosition: 0,
     canBeExtended: false,
-    extending: false
+    extending: false,
+    items: []
 };

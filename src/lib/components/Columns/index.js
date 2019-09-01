@@ -5,12 +5,14 @@ import Columns from './Columns';
 const mapStoreToProps = () => {
     const {
         computed: {
-            columns
+            columns,
+            normalizedItems
         }
     } = useStore();
 
     return {
-        columns
+        columns,
+        normalizedItems
     };
 };
 

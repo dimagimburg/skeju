@@ -7,11 +7,13 @@ export default function Rows() {
     const {rows} = useContext(OuterPropsContext);
     return (
         <>
-            {rows.map(row => (
-                <div key={row.id} className={styles.row}>
-                    <Columns row={row} />
-                </div>
-            ))}
+            {rows.map((row) => {
+                return (
+                    <div key={row.id} className={styles.row}>
+                        <Columns row={row} />
+                    </div>
+                );
+            })}
         </>
     );
 }
