@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { createSelector } from 'reselect';
 import getHiddenStartDate from './hiddenStartDate';
 import getHiddenEndDate from './hiddenEndDate';
@@ -7,13 +8,32 @@ const getItems = state => state.items;
 
 function getNormalizedItems(items, hiddenStartDate, hiddenEndDate) {
     return items.reduce((acc, currentItem) => {
-        const currentStartTime = formatMoment(currentItem.startTime);
-        const currentEndTime = formatMoment(currentItem.endTime);
-        const drawFromRight = !currentItem.startTime.isBetween(hiddenStartDate, hiddenEndDate);
-        const drawInDate = drawFromRight ? currentEndTime : currentStartTime;
+        let drawInDate;
+        const {startTime, endTime} = currentItem;
+        // when items right side is between hiddenStartDate and hiddenEndDate
+        const drawFromRight = !startTime.isBetween(hiddenStartDate, hiddenEndDate);
+
+        // when items left side is before hiddenStartDate and right side is after rightStartDate
+        const drawFromCenter = startTime.isBefore(hiddenStartDate) && endTime.isAfter(hiddenEndDate);
+
+        // decide from what date the item should be drawn
+        // if drawn from center then draw it from the center of hiddenStartDate and hiddenEndDAte
+        // if drawn from right - end date
+        // if drawn from left - start date
+        if (drawFromCenter) {
+            // get the middle date
+            drawInDate = hiddenStartDate.clone().add(Math.abs(moment.duration(hiddenEndDate.diff(hiddenStartDate)).asSeconds() / 2), 'seconds');
+            console.log('here', formatMoment(drawInDate));
+        } else {
+            drawInDate = drawFromRight ? endTime : startTime;
+        }
+
+        drawInDate = formatMoment(drawInDate);
+
         const normalizedItem = {
             ...currentItem,
-            drawFromRight
+            drawFromRight,
+            drawFromCenter
         };
 
         return {

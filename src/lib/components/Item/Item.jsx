@@ -19,11 +19,20 @@ export default function Item(props) {
     const leftOffset = columnWidth * (Math.abs(moment.duration(columnStartDate.diff(item.startTime)).asSeconds()) / dayInSeconds);
     const rightOffset = (lengthInDays * columnWidth) - (columnWidth * (moment.duration(item.endTime.diff(columnStartDate)).asSeconds() / dayInSeconds));
 
-    const leftOrRightStyle = {
-        [item.drawFromRight ? 'right' : 'left']: [item.drawFromRight ? rightOffset : leftOffset]
-    };
+    let positioningStyles = {};
+    if (item.drawFromCenter) {
+        positioningStyles = {
+            left: -width / 2
+        };
+    } else {
+        positioningStyles = {
+            [item.drawFromRight ? 'right' : 'left']: [item.drawFromRight ? rightOffset : leftOffset]
+        };
+    }
 
-    return <div className={cx(styles.itemWrapper)} style={{width, ...leftOrRightStyle}}>{renderItem({width, id: item.id})}</div>;
+    console.log(item.id, item.drawFromCenter);
+
+    return <div className={cx(styles.itemWrapper)} style={{width, ...positioningStyles}}>{renderItem({width, id: item.id})}</div>;
 }
 
 Item.propTypes = {
@@ -32,7 +41,8 @@ Item.propTypes = {
         row: PropTypes.string.isRequired,
         startTime: PropTypes.instanceOf(moment).isRequired,
         endTime: PropTypes.instanceOf(moment).isRequired,
-        drawFromRight: PropTypes.bool.isRequired
+        drawFromRight: PropTypes.bool.isRequired,
+        drawFromCenter: PropTypes.bool.isRequired
     }).isRequired,
     columnWidth: PropTypes.number.isRequired,
     columnStartDate: PropTypes.instanceOf(moment).isRequired,
