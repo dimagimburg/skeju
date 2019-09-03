@@ -13,3 +13,7 @@
 .selected .item{
     background: deeppink;
 }
+
+.selectable{
+    cursor: pointer;
+}

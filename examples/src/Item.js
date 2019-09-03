@@ -6,6 +6,6 @@ import './Item.css';
 // or you can implement your own logic via props
 
 export default function Item(props){
-    const {width, id} = props;
-    return <div className={cx('item')}>{width} - {id}</div>;
+    const {width, id, allowSelect, selected} = props;
+    return <div className={cx('item', {selectable: allowSelect})}>{`id: ${id}, width: ${width}`}{allowSelect ? ` selected: ${selected}` : ''}</div>;
 }

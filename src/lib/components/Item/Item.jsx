@@ -45,7 +45,7 @@ export default function Item(props) {
             onClick={handleItemClicked}
             onKeyPress={handleItemClicked}
         >
-            {renderItem({width, id})}
+            {renderItem({width, id, allowSelect, selected})}
         </div>
     );
 }
