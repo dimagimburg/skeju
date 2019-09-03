@@ -42,7 +42,8 @@
     "no-underscore-dangle": 0,
     "import/no-mutable-exports": 0,
     "arrow-body-style": 0,
-    "react/require-default-props": 0
+    "react/require-default-props": 0,
+    "jsx-a11y/no-static-element-interactions": 0
   },
   "parser": "babel-eslint"
 }

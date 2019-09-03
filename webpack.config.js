@@ -23,24 +23,25 @@ module.exports = {
             {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                loader: "eslint-loader",
-                options: {
-                    // eslint options (if necessary)
-                }
+                loader: "eslint-loader"
             },
             {
                 test: /\.(s)?css$/,
                 loader: "style-loader"
             },
             {
-                test: /\.(s)?css$/,
+                test: /\.scss$/,
                 loader: 'css-loader',
                 options: {
                     modules: true,
                 },
             },
             {
-                test: /\.(s)?css$/,
+                test: /\.css$/,
+                loader: 'css-loader'
+            },
+            {
+                test: /\.scss$/,
                 loader: 'sass-loader'
             },
         ]

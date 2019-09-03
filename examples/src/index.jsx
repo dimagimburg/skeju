@@ -10,7 +10,8 @@ const App = () => {
             id: '111',
             row: 'shmulik',
             startTime: moment().add(12, 'hours'),
-            endTime: moment().add(2, 'seconds').add(2, 'days').add(24, 'hours')
+            endTime: moment().add(2, 'seconds').add(2, 'days').add(24, 'hours'),
+            allowSelect: true
         },
         {
             id: '123123',
@@ -43,8 +44,6 @@ const App = () => {
         //     endTime: moment().add(2, 'seconds').add(-1, 'days')
         // }
     ];
-
-    console.log(items);
 
     const rows = [
         {

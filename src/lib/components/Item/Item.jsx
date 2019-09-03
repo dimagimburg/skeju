@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import cx from 'classnames';
@@ -12,27 +12,42 @@ export default function Item(props) {
         item, columnWidth, columnStartDate
     } = props;
 
-    const {renderItem} = useContext(OuterPropsContext);
+    const [selected, setItemSelected] = useState(false);
 
-    const lengthInDays = item.endTime.diff(item.startTime, 'days', true);
+    const {renderItem} = useContext(OuterPropsContext);
+    const {startTime, endTime, drawFromRight, drawFromCenter, id, allowSelect} = item;
+    const lengthInDays = endTime.diff(startTime, 'days', true);
     const width = (lengthInDays * columnWidth).toFixed(3);
-    const leftOffset = columnWidth * (Math.abs(moment.duration(columnStartDate.diff(item.startTime)).asSeconds()) / dayInSeconds);
-    const rightOffset = (lengthInDays * columnWidth) - (columnWidth * (moment.duration(item.endTime.diff(columnStartDate)).asSeconds() / dayInSeconds));
+    const leftOffset = columnWidth * (Math.abs(moment.duration(columnStartDate.diff(startTime)).asSeconds()) / dayInSeconds);
+    const rightOffset = (lengthInDays * columnWidth) - (columnWidth * (moment.duration(endTime.diff(columnStartDate)).asSeconds() / dayInSeconds));
 
     let positioningStyles = {};
-    if (item.drawFromCenter) {
+    if (drawFromCenter) {
         positioningStyles = {
             left: -width / 2
         };
     } else {
         positioningStyles = {
-            [item.drawFromRight ? 'right' : 'left']: [item.drawFromRight ? rightOffset : leftOffset]
+            [drawFromRight ? 'right' : 'left']: [drawFromRight ? rightOffset : leftOffset]
         };
     }
 
-    console.log(item.id, item.drawFromCenter);
+    function handleItemClicked() {
+        if (allowSelect) {
+            setItemSelected(!selected);
+        }
+    }
 
-    return <div className={cx(styles.itemWrapper)} style={{width, ...positioningStyles}}>{renderItem({width, id: item.id})}</div>;
+    return (
+        <div
+            className={cx(styles.itemWrapper, {selected})}
+            style={{width, ...positioningStyles}}
+            onClick={handleItemClicked}
+            onKeyPress={handleItemClicked}
+        >
+            {renderItem({width, id})}
+        </div>
+    );
 }
 
 Item.propTypes = {
@@ -42,7 +57,8 @@ Item.propTypes = {
         startTime: PropTypes.instanceOf(moment).isRequired,
         endTime: PropTypes.instanceOf(moment).isRequired,
         drawFromRight: PropTypes.bool.isRequired,
-        drawFromCenter: PropTypes.bool.isRequired
+        drawFromCenter: PropTypes.bool.isRequired,
+        allowSelect: PropTypes.bool
     }).isRequired,
     columnWidth: PropTypes.number.isRequired,
     columnStartDate: PropTypes.instanceOf(moment).isRequired,
