@@ -78,11 +78,6 @@ Please use `.eslint` file in development (already part of the webpack developmen
 ## Contributing
 
 We appreciate any contribution to Skeju. For now just send a PR and the code review will be done by Dima Gimburg. Please be descriptive in your commit messages and keep code cleaner as possible and conform to eslint. Later there will be a `CONTRIBUTING.md` file with details on our code of conduct.
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
 
 ## Contributing
 
