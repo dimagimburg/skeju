@@ -13,7 +13,7 @@ export default function Columns(props) {
                     // note: not all item are being drawn, only the ones with sufficient
                     // (start or end time is between hidden start date and hidden end date,
                     // or if start time is before hiddenStartDate and end time is after hiddenEndDate)
-                    const hasItemsToDraw = normalizedItems[row.id][column.id];
+                    const hasItemsToDraw = normalizedItems[row.id] && normalizedItems[row.id][column.id];
                     return (
                         <Column key={column.id}>
                             { hasItemsToDraw && <Items row={row} column={column} /> }

@@ -1,51 +1,54 @@
-import React, {useContext, useState} from 'react';
+import React, { useContext, useState, useRef, useLayoutEffect, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import cx from 'classnames';
-import {OuterPropsContext} from '../../state/OuterPropsContext';
+import { OuterPropsContext } from '../../state/OuterPropsContext';
+import { getItemPositioningStyles } from './utils';
+import { useResizable } from '../../hooks';
 import styles from './Item.scss';
 
 const dayInSeconds = 24 * 60 * 60;
 
+function handleItemClicked(allowSelect, isSelected, setItemSelected) {
+    if (allowSelect) {
+        setItemSelected(!isSelected);
+    }
+}
+
 export default function Item(props) {
-    const {
-        item, columnWidth, columnStartDate
-    } = props;
+    const { item, columnWidth, columnStartDate } = props;
 
-    const [selected, setItemSelected] = useState(false);
-
-    const {renderItem} = useContext(OuterPropsContext);
-    const {startTime, endTime, drawFromRight, drawFromCenter, id, allowSelect} = item;
+    const { renderItem } = useContext(OuterPropsContext);
+    const { startTime, endTime, drawFromRight, drawFromCenter, id, allowSelect } = item;
     const lengthInDays = endTime.diff(startTime, 'days', true);
-    const width = (lengthInDays * columnWidth).toFixed(3);
-    const leftOffset = columnWidth * (Math.abs(moment.duration(columnStartDate.diff(startTime)).asSeconds()) / dayInSeconds);
     const rightOffset = (lengthInDays * columnWidth) - (columnWidth * (moment.duration(endTime.diff(columnStartDate)).asSeconds() / dayInSeconds));
 
-    let positioningStyles = {};
-    if (drawFromCenter) {
-        positioningStyles = {
-            left: -width / 2
-        };
-    } else {
-        positioningStyles = {
-            [drawFromRight ? 'right' : 'left']: [drawFromRight ? rightOffset : leftOffset]
-        };
-    }
+    const [isSelected, setItemSelected] = useState(false);
+    const width = (Number((lengthInDays * columnWidth).toFixed(3)));
+    const leftOffset = columnWidth * (Math.abs(moment.duration(columnStartDate.diff(startTime)).asSeconds()) / dayInSeconds);
 
-    function handleItemClicked() {
-        if (allowSelect) {
-            setItemSelected(!selected);
-        }
-    }
+    const itemResizableWrapperRef = useRef(null);
+    const leftResizerRef = useRef(null);
+    const rightResizerRef = useRef(null);
+
+    useEffect(() => {
+        const _styles = getItemPositioningStyles(drawFromCenter, drawFromRight, leftOffset, rightOffset, width);
+        itemResizableWrapperRef.current.style.left = _styles.left;
+        itemResizableWrapperRef.current.style.width = `${width}px`;
+    });
+
+    useResizable(itemResizableWrapperRef, rightResizerRef, leftResizerRef);
 
     return (
         <div
-            className={cx(styles.itemWrapper, {selected})}
-            style={{width, ...positioningStyles}}
-            onClick={handleItemClicked}
-            onKeyPress={handleItemClicked}
+            className={cx(styles.itemWrapper, {selected: isSelected})}
+            ref={itemResizableWrapperRef}
+            onClick={() => { handleItemClicked(allowSelect, isSelected, setItemSelected); }}
+            onKeyPress={() => { handleItemClicked(allowSelect, isSelected, setItemSelected); }}
         >
-            {renderItem({width, id, allowSelect, selected})}
+            <div className={cx(styles.resizer, styles.left)} ref={leftResizerRef} />
+            {renderItem({width, id, allowSelect, selected: isSelected})}
+            <div className={cx(styles.resizer, styles.right)} ref={rightResizerRef} />
         </div>
     );
 }
@@ -58,7 +61,8 @@ Item.propTypes = {
         endTime: PropTypes.instanceOf(moment).isRequired,
         drawFromRight: PropTypes.bool.isRequired,
         drawFromCenter: PropTypes.bool.isRequired,
-        allowSelect: PropTypes.bool
+        allowSelect: PropTypes.bool,
+        allowResize: PropTypes.bool
     }).isRequired,
     columnWidth: PropTypes.number.isRequired,
     columnStartDate: PropTypes.instanceOf(moment).isRequired,

@@ -1,4 +1,21 @@
-.itemWrapper{
+.itemWrapper {
     position: relative;
     height: 100%;
+}
+
+.resizer {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    background: black;
+    width: 5px;
+    cursor: col-resize;
+
+    &.left {
+        left: 0;
+    }
+
+    &.right {
+        right: 0;
+    }
 }
