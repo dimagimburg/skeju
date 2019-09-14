@@ -15,7 +15,8 @@ const App = () => {
             row: 'row-1',
             startTime: moment().add(12, 'hours'),
             endTime: moment().add(2, 'seconds').add(2, 'days').add(24, 'hours'),
-            allowSelect: true
+            allowSelect: true,
+            allowResize: true,
         },
         {
             id: 'e1c1bc3f-0575-4871-aecf-474b66222e73',
