@@ -17,11 +17,13 @@ const Scheduler = (props) => {
 
     useTraceUpdate(props);
 
+    // console.log(items);
+
     // refs
     const schedulerRef = useRef(null);
 
     // component loaded and not yet drawn
-    useEffect(() => { setItems(items); }, [items]);
+    useEffect(() => { console.log('setting items', items); setItems(items); }, [items]);
 
     // component load and drawn
     useLayoutEffect(() => {

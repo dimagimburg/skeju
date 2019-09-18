@@ -9,6 +9,7 @@ export let setState;
 const useStoreParts = (initialState, actions, _computed) => {
     const [_state, _setState] = useState(initialState);
     return useMemo(() => {
+        // console.log('here', state);
         const computedEvaluated = Object.entries(_computed).reduce((prev, [name, func]) => {
             Object.defineProperty(prev, name, { get: () => func(_state), enumerable: true });
             return prev;

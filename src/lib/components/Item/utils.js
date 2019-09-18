@@ -9,3 +9,8 @@ export function getItemPositioningStyles(drawFromCenter, drawFromRight, leftOffs
         [drawFromRight ? 'right' : 'left']: drawFromRight ? `${rightOffset}px` : `${leftOffset}px`
     };
 }
+
+export function getMomentWithOffset(momentObject, dayWidth, offset) {
+    const seconds = (offset / dayWidth) * 24 * 60 * 60;
+    return momentObject.clone().add(seconds, 'seconds');
+}

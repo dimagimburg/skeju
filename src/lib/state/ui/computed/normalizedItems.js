@@ -23,7 +23,6 @@ function getNormalizedItems(items, hiddenStartDate, hiddenEndDate) {
         if (drawFromCenter) {
             // get the middle date
             drawInDate = hiddenStartDate.clone().add(Math.abs(moment.duration(hiddenEndDate.diff(hiddenStartDate)).asSeconds() / 2), 'seconds');
-            console.log('here', formatMoment(drawInDate));
         } else {
             drawInDate = drawFromRight ? endTime : startTime;
         }

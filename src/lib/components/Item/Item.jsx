@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef, useLayoutEffect, useEffect } from 'react';
+import React, { useContext, useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import cx from 'classnames';
@@ -10,6 +10,7 @@ import styles from './Item.scss';
 const dayInSeconds = 24 * 60 * 60;
 
 function handleItemClicked(allowSelect, isSelected, setItemSelected) {
+    window.getSelection().removeAllRanges();
     if (allowSelect) {
         setItemSelected(!isSelected);
     }
@@ -17,7 +18,7 @@ function handleItemClicked(allowSelect, isSelected, setItemSelected) {
 
 export default function Item(props) {
     const { item, columnWidth, columnStartDate } = props;
-
+    const { onResizeFinished } = useContext(OuterPropsContext);
     const { renderItem } = useContext(OuterPropsContext);
     const { startTime, endTime, drawFromRight, drawFromCenter, id, allowSelect } = item;
     const lengthInDays = endTime.diff(startTime, 'days', true);
@@ -37,7 +38,7 @@ export default function Item(props) {
         itemResizableWrapperRef.current.style.width = `${width}px`;
     });
 
-    useResizable(itemResizableWrapperRef, rightResizerRef, leftResizerRef);
+    useResizable(item, columnWidth, itemResizableWrapperRef, rightResizerRef, leftResizerRef, onResizeFinished);
 
     return (
         <div

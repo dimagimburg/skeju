@@ -1,11 +1,13 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { render } from 'react-dom';
 import { Scheduler } from '../../src';
 import moment from 'moment';
 import Item from './Item';
 
 const App = () => {
-    const items = [
+    console.log('render');
+
+    const [items, setItems] = useState([
         // {
         //     id: '111',
         //     row: 'shmulik',
@@ -45,7 +47,7 @@ const App = () => {
         //     startTime: moment().add(2, 'seconds').add(-200, 'days'),
         //     endTime: moment().add(2, 'seconds').add(-1, 'days')
         // }
-    ];
+    ]);
 
     const rows = [
         {
@@ -64,6 +66,9 @@ const App = () => {
                 items={items}
                 rows={rows}
                 renderItem={(props) => <Item {...props} />}
+                onResizeFinished={(id, newStartTime) => {
+                    setItems([]);
+                }}
             />
         </div>
     );

@@ -53,10 +53,13 @@ const setCanBeExtended = (canBeExtended) => {
 };
 
 const setItems = (items) => {
-    setState(prevState => ({
-        ...prevState,
-        items
-    }));
+    setState((prevState) => {
+        console.log({...prevState, items, state});
+        return {
+            ...prevState,
+            items
+        };
+    });
 };
 
 const actions = {
