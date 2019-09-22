@@ -67,7 +67,10 @@ const App = () => {
                 rows={rows}
                 renderItem={(props) => <Item {...props} />}
                 onResizeFinished={(id, newStartTime) => {
-                    setItems([]);
+                    const changedItemIndex = items.findIndex(i => i.id === id);
+                    const newItems = [...items];
+                    newItems[changedItemIndex].startTime = newStartTime;
+                    setItems(newItems);
                 }}
             />
         </div>

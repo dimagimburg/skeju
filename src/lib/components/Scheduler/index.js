@@ -21,7 +21,7 @@ const mapStoreToProps = () => {
     const {
         setSchedulerWidth, setVisibleDates, setScrollLeftPosition, extendSchedulerToRight, extendSchedulerToLeft,
         setCanBeExtended, setItems
-    } = actions();
+    } = actions;
 
     return {
         setSchedulerWidth,

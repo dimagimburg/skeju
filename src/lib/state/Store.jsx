@@ -2,20 +2,17 @@ import React, {
     useState, useMemo, useContext, createContext
 } from 'react';
 
-export let state;
 export let computed;
 export let setState;
 
 const useStoreParts = (initialState, actions, _computed) => {
-    const [_state, _setState] = useState(initialState);
+    const [state, _setState] = useState(initialState);
     return useMemo(() => {
-        // console.log('here', state);
         const computedEvaluated = Object.entries(_computed).reduce((prev, [name, func]) => {
-            Object.defineProperty(prev, name, { get: () => func(_state), enumerable: true });
+            Object.defineProperty(prev, name, { get: () => func(state), enumerable: true });
             return prev;
         }, {});
 
-        state = _state;
         setState = _setState;
         computed = computedEvaluated;
 

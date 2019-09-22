@@ -14,6 +14,7 @@ export default function useResizable(item, columnWidth, resizableElement, rightR
         onResizeFinished(item.id, getMomentWithOffset(item.startTime, columnWidth, leftOffset.current));
         window.removeEventListener('mousemove', resizeRightFunctionRef.current);
         window.removeEventListener('mousemove', resizeLeftFunctionRef.current);
+        window.removeEventListener('mouseup', stopResize);
     };
 
     const resizeLeft = (initialX, initialWidth, initialLeft, wrapper, e) => {

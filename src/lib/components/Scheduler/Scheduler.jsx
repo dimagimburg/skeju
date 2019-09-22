@@ -7,7 +7,6 @@ import {notVisibleBufferWindowsEachSide} from '../../constants';
 import Rows from '../Rows';
 import styles from './Scheduler.scss';
 
-
 const Scheduler = (props) => {
     const {
         setSchedulerWidth, setVisibleDates, daysVisible, schedulerWidth, setScrollLeftPosition, totalSchedulerWidth,
@@ -17,13 +16,14 @@ const Scheduler = (props) => {
 
     useTraceUpdate(props);
 
-    // console.log(items);
-
     // refs
     const schedulerRef = useRef(null);
 
     // component loaded and not yet drawn
-    useEffect(() => { console.log('setting items', items); setItems(items); }, [items]);
+    useEffect(() => {
+        // setTimeout(() => { setItems([]); }, 5000);
+        setItems(items);
+    }, [items]);
 
     // component load and drawn
     useLayoutEffect(() => {

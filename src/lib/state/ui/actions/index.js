@@ -54,7 +54,6 @@ const setCanBeExtended = (canBeExtended) => {
 
 const setItems = (items) => {
     setState((prevState) => {
-        console.log({...prevState, items, state});
         return {
             ...prevState,
             items
@@ -72,4 +71,4 @@ const actions = {
     setItems
 };
 
-export default () => actions;
+export default actions;
