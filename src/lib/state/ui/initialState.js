@@ -3,11 +3,11 @@ import moment from 'moment';
 const now = moment();
 
 export default {
-    schedulerWidth: 0,
+    startDate: null,
+    endDate: null,
+    items: [],
+    rows: [],
+    hoveredRow: null,
     visibleStartDate: now,
-    visibleEndDate: now,
-    scrollLeftPosition: 0,
-    canBeExtended: false,
-    extending: false,
-    items: []
+    visibleEndDate: now
 };

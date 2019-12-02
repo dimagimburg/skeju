@@ -1,27 +1,31 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import styles from './Header.scss';
-import HeaderItem from '../HeaderItem';
+import {OuterPropsContext} from '../../state/OuterPropsContext';
 
-export default function Header(props) {
-    const {
-        schedulerRef, columns
-    } = props;
-
-    const visibility = columns.reduce((columnsVisibiltyObject, nextColumn) => {
-        const copyColumnsVisibiltyObject = Object.assign(columnsVisibiltyObject, {});
-        copyColumnsVisibiltyObject[nextColumn.id] = false;
-        return copyColumnsVisibiltyObject;
-    }, {});
+export default function Header({scrollerRef, startDate, endDate, numberOfDays}) {
+    const { columnWidth, sidebarWidth, headerHeight, sidebarTitle } = useContext(OuterPropsContext);
 
     return (
-        <div className={styles.header}>
-            { columns.map(column => <HeaderItem key={column.id} column={column} schedulerRef={schedulerRef} />) }
+        <div className={styles.headerWrapper} style={{height: headerHeight}}>
+            <div className={styles.headerSidebar} style={{ width: sidebarWidth, minWidth: sidebarWidth, flexBasis: sidebarWidth }}>{sidebarTitle}</div>
+            <div className={styles.headerContent} ref={scrollerRef}>
+                {
+                    [...Array(numberOfDays)].map((x, i) => (
+                        <div className={styles.headerColumn} key={Math.random()} style={{width: columnWidth, minWidth: columnWidth}}>
+                            {startDate.clone().add(i, 'days').format('YYYY/MM/DD')}
+                        </div>
+                    ))
+                }
+            </div>
         </div>
     );
 }
 
 Header.propTypes = {
-    schedulerRef: PropTypes.any.isRequired,
-    columns: PropTypes.array.isRequired
+    scrollerRef: PropTypes.object,
+    startDate: PropTypes.instanceOf(moment),
+    endDate: PropTypes.instanceOf(moment),
+    numberOfDays: PropTypes.number
 };

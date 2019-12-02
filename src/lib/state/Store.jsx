@@ -4,24 +4,26 @@ import React, {
 
 export let computed;
 export let setState;
+export let state;
 
 const useStoreParts = (initialState, actions, _computed) => {
-    const [state, _setState] = useState(initialState);
+    const [_state, _setState] = useState(initialState);
     return useMemo(() => {
         const computedEvaluated = Object.entries(_computed).reduce((prev, [name, func]) => {
-            Object.defineProperty(prev, name, { get: () => func(state), enumerable: true });
+            Object.defineProperty(prev, name, { get: () => func(_state), enumerable: true });
             return prev;
         }, {});
 
         setState = _setState;
         computed = computedEvaluated;
+        state = _state;
 
         return {
             actions,
             computed: computedEvaluated,
-            state
+            state: _state
         };
-    }, [state]);
+    }, [_state]);
 };
 
 export const Store = (storeProps) => {

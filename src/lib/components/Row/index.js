@@ -1,24 +1,24 @@
 import {useStore} from '../../state';
 import withStore from '../../state/withStore';
-import Header from './Header';
+import Row from './Row';
 
 const mapStoreToProps = () => {
     const {
-        actions,
         state: {
             startDate,
             endDate
         },
-        computed: {
-            numberOfDays
-        }
+        actions: {
+            setHoveredRow
+        },
+        computed
     } = useStore();
 
     return {
         startDate,
         endDate,
-        numberOfDays
+        setHoveredRow
     };
 };
 
-export default withStore(mapStoreToProps)(Header);
+export default withStore(mapStoreToProps)(Row);

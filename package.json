@@ -50,6 +50,8 @@
     "classnames": "^2.2.6",
     "moment": "^2.24.0",
     "prop-types": "latest",
-    "reselect": "^4.0.0"
+    "react-scroll-sync": "^0.7.0",
+    "reselect": "^4.0.0",
+    "typeface-lato": "0.0.75"
   }
 }

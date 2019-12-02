@@ -1,0 +1,17 @@
+$scheduler-line-color: #f0f0f0;
+
+$sidebar-background-color: #0c1e29;
+$sidebar-background-color-hover: #123041;
+$sidebar-color: #c7c7c8;
+
+$header-background-color: #36424d;
+$header-color: #c0c1c2;
+
+* {
+    font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+}
+
+:export {
+    lineColor: $scheduler-line-color;
+}

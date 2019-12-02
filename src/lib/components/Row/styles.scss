@@ -1,0 +1,14 @@
+@import '../../css/globals';
+
+.schedulerRow{
+    border-bottom: 1px solid $scheduler-line-color;
+}
+
+.item{
+    position: absolute;
+    background: darkcyan;
+    border-radius: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

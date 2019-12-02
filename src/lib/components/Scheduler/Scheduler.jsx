@@ -1,101 +1,40 @@
-import React, {useRef, useLayoutEffect, useContext, useEffect} from 'react';
+import React, {useLayoutEffect, useRef, useEffect, useCallback, useContext} from 'react';
+import cx from 'classnames';
 import PropTypes from 'prop-types';
-import {useDidUpdateEffect, useTraceUpdate} from '../../hooks';
-import Debug from '../Debug';
-import Header from '../Header';
-import {notVisibleBufferWindowsEachSide} from '../../constants';
-import Rows from '../Rows';
 import styles from './Scheduler.scss';
+import {getGridBackgroundURL} from '../../canvas';
+import {OuterPropsContext} from '../../state/OuterPropsContext';
+import Row from '../Row';
 
-const Scheduler = (props) => {
-    const {
-        setSchedulerWidth, setVisibleDates, daysVisible, schedulerWidth, setScrollLeftPosition, totalSchedulerWidth,
-        scrollLeftPosition, columnWidth, extendSchedulerToRight, extendSchedulerToLeft, setCanBeExtended,
-        canBeExtended, extending, setItems, visibleStartDate, visibleEndDate, items
-    } = props;
+import globalCss from '../../css/globals.scss';
 
-    useTraceUpdate(props);
-
-    // refs
-    const schedulerRef = useRef(null);
-
-    // component loaded and not yet drawn
-    useEffect(() => {
-        // setTimeout(() => { setItems([]); }, 5000);
-        setItems(items);
-    }, [items]);
-
-    // component load and drawn
-    useLayoutEffect(() => {
-        const scrollMoved = () => {
-            const currentScrollLeftPosition = schedulerRef.current.scrollLeft;
-            setScrollLeftPosition(currentScrollLeftPosition);
-        };
-
-        schedulerRef.current.addEventListener('scroll', scrollMoved);
-
-        return () => { schedulerRef.current.removeEventListener('scroll', scrollMoved); };
-    }, [totalSchedulerWidth]);
-
-    // component load or updated visibleStartDate, visibleEndDate or schedulerWidth (e.g resize)
-    useLayoutEffect(() => {
-        // update schedulerWidth
-        setSchedulerWidth(schedulerRef.current.getBoundingClientRect().width);
-
-        // update visible date
-        setVisibleDates(visibleStartDate, visibleEndDate);
-
-        setTimeout(() => {
-            // set horizontal scroll bar in the middle
-            const initialScrollLeftPosition = schedulerWidth * notVisibleBufferWindowsEachSide;
-            schedulerRef.current.scrollLeft = initialScrollLeftPosition;
-            setScrollLeftPosition(initialScrollLeftPosition);
-            setCanBeExtended(true);
-        }, 0);
-    }, [schedulerWidth, visibleStartDate, visibleEndDate]);
-
-    // react on scroll move
-    useDidUpdateEffect(() => {
-        if (canBeExtended && !extending && scrollLeftPosition < schedulerWidth) {
-            extendSchedulerToLeft(() => { schedulerRef.current.scrollLeft += daysVisible * columnWidth; });
-        }
-
-        if (canBeExtended && !extending && scrollLeftPosition > totalSchedulerWidth - schedulerWidth * 2) {
-            extendSchedulerToRight(() => { schedulerRef.current.scrollLeft -= daysVisible * columnWidth; });
-        }
-    }, [scrollLeftPosition, schedulerWidth, totalSchedulerWidth]);
+export default function Scheduler({ scrollerRef, numberOfDays, normalizedItems, hoveredRow, setHoveredRow }) {
+    const { columnWidth, rows, sidebarWidth, rowHeight: height } = useContext(OuterPropsContext);
+    const width = numberOfDays * columnWidth;
+    const backgroundImage = `url(${getGridBackgroundURL(width, numberOfDays, globalCss.lineColor)}`;
 
     return (
-        <div className={styles.wrapper}>
-            <Debug />
-            <div className={styles.scheduler} ref={schedulerRef}>
-                <div className={styles.contentWrapper}>
-                    <Header schedulerRef={schedulerRef} />
-                    <Rows />
+        <div className={styles.schedulerWrapper}>
+            <div className={styles.schedulerSidebar} style={{ width: sidebarWidth, minWidth: sidebarWidth, flexBasis: sidebarWidth }}>
+                {
+                    rows.map(r => <div key={`${r.id}-sidebar`} onMouseEnter={() => { setHoveredRow(r.id); }} onMouseLeave={() => { setHoveredRow(null); }} className={cx(styles.sidebarRow, { [styles.hovered]: r.id === hoveredRow })} style={{ height }}>{r.id}</div>)
+                }
+            </div>
+            <div className={styles.schedulerContent} ref={scrollerRef}>
+                <div className={styles.schedulerBackground} style={{ width, backgroundImage }}>
+                    {
+                        rows.map(r => <Row key={`${r.id}-scheduler`} id={r.id} items={normalizedItems[r.id]} />)
+                    }
                 </div>
             </div>
         </div>
     );
-};
+}
 
 Scheduler.propTypes = {
-    setSchedulerWidth: PropTypes.func.isRequired,
-    setVisibleDates: PropTypes.func.isRequired,
-    setScrollLeftPosition: PropTypes.func.isRequired,
-    schedulerWidth: PropTypes.number.isRequired,
-    totalSchedulerWidth: PropTypes.number.isRequired,
-    scrollLeftPosition: PropTypes.number.isRequired,
-    extendSchedulerToLeft: PropTypes.func.isRequired,
-    extendSchedulerToRight: PropTypes.func.isRequired,
-    setCanBeExtended: PropTypes.func.isRequired,
-    canBeExtended: PropTypes.bool.isRequired,
-    extending: PropTypes.bool.isRequired,
-    columnWidth: PropTypes.number.isRequired,
-    daysVisible: PropTypes.number.isRequired,
-    setItems: PropTypes.func.isRequired,
-    items: PropTypes.array.isRequired,
-    visibleStartDate: PropTypes.any.isRequired,
-    visibleEndDate: PropTypes.any.isRequired,
+    hoveredRow: PropTypes.any,
+    scrollerRef: PropTypes.any,
+    numberOfDays: PropTypes.number,
+    normalizedItems: PropTypes.object,
+    setHoveredRow: PropTypes.func
 };
-
-export default Scheduler;

@@ -1,40 +1,55 @@
-.wrapper{
-    width: 100%;
-    position: relative;
-}
+@import url("https://fonts.googleapis.com/css?family=Lato:100,300,400,700");
+@import "../../css/globals";
 
-.scheduler {
-    margin-bottom: 20px;
-    width: 100%;
-    -webkit-overflow-scrolling: touch;
+.schedulerWrapper{
     display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
+    flex-direction: row;
+    overflow: hidden;
+}
+
+.schedulerSidebar{
+    border-right: 3px solid #eee;
+    background: $sidebar-background-color;
+    color: $sidebar-color;
+    font-weight: 400;
+    box-shadow: 0 0 5px 0 rgba(0,0,0,0.4);
+    z-index: 1;
+}
+
+.schedulerContent{
+    display: flex;
+    flex-direction: row;
+    overflow: auto;
+    overflow-y: hidden;
+    flex: 1 1 0%;
     position: relative;
 }
 
-.scheduler::-webkit-scrollbar {
-    width: 0 !important
+.schedulerColumn{
+    width: 100px;
+    min-width: 100px;
+    border-left:1px solid #c0c0c2;
 }
 
-.contentWrapper{
-    width: 100%;
-}
-
-.leftCollisionDetector{
+.schedulerBackground{
     position: absolute;
-    left: 0;
+    background-size: 100%;
     height: 100%;
-    background: pink;
-    width: 20px;
-    z-index:1;
 }
 
-.rightCollisionDetector{
-    position: absolute;
-    right: 0;
-    height: 100%;
-    background: pink;
-    width: 20px;
-    z-index:1;
+.sidebarRow {
+    padding: 0 10px;
+    font-size: 14px;
+    font-weight: 300;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+
+    &:not(:last-child) {
+        border-bottom: 1px solid #777779;
+    }
+
+    &.hovered{
+        background: $sidebar-background-color-hover;
+    }
 }

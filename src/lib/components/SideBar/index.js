@@ -1,21 +1,23 @@
 import {useStore} from '../../state';
 import withStore from '../../state/withStore';
-import HeaderItem from './HeaderItem';
+import SideBar from './SideBar';
 
 const mapStoreToProps = () => {
     const {
-        actions: {
-            setLeftVisibleDate
+        state: {
+            sidebarWidth,
+            columnWidth
         },
         computed: {
-            columnWidth
+            columns
         }
     } = useStore();
 
     return {
-        setLeftVisibleDate,
+        columns,
+        sidebarWidth,
         columnWidth
     };
 };
 
-export default withStore(mapStoreToProps)(HeaderItem);
+export default withStore(mapStoreToProps)(SideBar);

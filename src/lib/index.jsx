@@ -1,6 +1,6 @@
 import React from 'react';
 import {SchedulerStoreProvider, OuterPropsProvider} from './state';
-import Scheduler from './components/Scheduler';
+import Scheduler from './components/Skeju';
 
 export default (props) => {
     return (

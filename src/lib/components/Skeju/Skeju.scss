@@ -1,0 +1,21 @@
+.wrapper{
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    width:600px;
+}
+
+.schedulerWrapper{
+    display:flex;
+    flex-direction: column;
+    flex: 1px;
+}
+
+.schedulerSidebar {
+    background: dimgrey;
+}
+
+.scheduler {
+    background: #fff;
+    flex: 1;
+}
